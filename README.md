@@ -41,3 +41,4 @@ http://www.yyysh.shop/
 
 ![image](https://user-images.githubusercontent.com/111475795/219528102-6219dcfd-09e1-424c-8a4f-476056fe47c9.png)
 
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Ftogla4062%2FmyProject02%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=count&edge_flat=false)](https://hits.seeyoufarm.com)
