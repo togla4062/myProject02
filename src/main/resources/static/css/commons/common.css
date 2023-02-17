@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+@import url("reset.css");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+
+.flex {
+	display: flex;
+}
+
+.row {
+	flex-direction: row;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.center {
+	justify-content: center;
+}
+
+.between {
+	justify-content: space-between;
+}
+
+.around {
+	justify-content: space-around;
+}
+
+.viewsize {
+	width: 1000px;
+	margin: 0 auto;
+}
+
+.signview {
+	width: 800px;
+	margin: 0 auto;
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/sideMenu/sideMenu.css">
+<link rel="stylesheet" href="/css/commons/chat-bot.css">
+<script src="/js/sideMenu/sideMenu.js"></script>
+<script src="/js/index/chat.js"></script>
+</head>
+<header>
+	<div class="wrap" id="calendarOnlyUse">
+		<input sec:authorize="isAuthenticated()" type="hidden" th:id="userID"
+			th:value="${#authentication.principal.no}">
+		<ul class="menuForm">
+			<li><a href="/" class="logoImg"> <!--  로고이미지 -->
+			</a></li>
+			<li sec:authorize="isAuthenticated()" class="employeesImg"
+				th:style="|background-image: url('${#authentication.principal.imageNo.url}');|">
+			</li>
+			<li sec:authorize="isAuthenticated()"
+				th:text="${#authentication.principal.name} + '/' + ${#authentication.principal.no}">[이름]/[사번]</li>
+			<li sec:authorize="isAuthenticated()"
+				th:text="${#authentication.principal.departmentNo.departmentName} + '/' + ${#authentication.principal.position.label}">[담당부서]/[직급]</li>
+			<li sec:authorize="isAuthenticated()"><a href="/logout">로그아웃</a></li>
+			<div id="sidemenulist">
+				<li>
+					<dl class="menuList">
+						<dt>조직도</dt>
+						<dd>
+							<a href="/ozc/familytree"><span
+								style="background-image: url('/image/icon/list-icon.png');"></span>리스트</a>
+						</dd>
+						<dd>
+							<a href="/Organization/regist"><span
+								style="background-image: url('/image/icon/regist-icon.png');"></span>등록</a>
+						</dd>
+						<dd>
+							<a href="/calendar"><span
+								style="background-image: url('/image/icon/calendar-icon.png');"></span>캘린더</a>
+						</dd>
+						<dd>
+							<a href="/departments/manage"><span
+								style="background-image: url('/image/icon/organization-icon.png');"></span>부서관리</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>인사 관리</dt>
+						<dd>
+							<a href="/scheduleList"><span
+								style="background-image: url('/image/icon/schedule-icon.png');"></span>일정관리</a>
+						</dd>
+						<dd>
+							<a href="/personnelEvaList"><span
+								style="background-image: url('/image/icon/emp-mgmt.png');"></span>인사관리</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>근태 및 결재</dt>
+						<dd>
+							<a href="/attendanceList"><span
+								style="background-image: url('/image/icon/attendance-icon.png');"></span>근태
+								리스트</a>
+						</dd>
+						<dd>
+							<a href="/myAttendance"><span
+								style="background-image: url('/image/icon/my-working-icon.png');"></span>내
+								근태 및 휴가</a>
+						</dd>
+						<dd>
+							<a href="/dayoff"><span
+								style="background-image: url('/image/icon/dayoff-icon.png');"></span>휴가신청
+								작성</a>
+						</dd>
+						<dd sec:authorize="hasRole('ROLE_PERSONAL')">
+							<a href="/approvalList"><span
+								style="background-image: url('/image/icon/approve-icon.png');"></span>내
+								결재 리스트</a>
+						</dd>
+						<dd sec:authorize="hasRole('ROLE_CEO')">
+							<a href="/approvalList2"><span
+								style="background-image: url('/image/icon/approve-icon.png');"></span>내
+								결재 리스트</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>게시판</dt>
+						<dd>
+							<a href="/Board/noticeList"><span
+								style="background-image: url('/image/icon/notice-icon.png');"></span>공지사항</a>
+						</dd>
+						<dd>
+							<a href="/Board/cncList"><span
+								style="background-image: url('/image/icon/cnc-icon.png');"></span>경조사</a>
+						</dd>
+						<dd>
+							<a href="/Board/suggestionList"><span
+								style="background-image: url('/image/icon/request-icon.png');"></span>건의
+								게시판</a>
+						</dd>
+						<dd>
+							<a href="/bus/busInfo"><span
+								style="background-image: url('/image/icon/bus.png');"></span>버스정보</a>
+						</dd>
+						<dd>
+							<a href="/fes"><span
+								style="background-image: url('/image/icon/festival.png');"></span>광주광역시
+								축제정보 조회</a>
+						</dd>
+						<dd>
+							<a href="/weather"><span
+								style="background-image: url('/image/icon/weather.png');"></span>날씨정보 조회</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>마이페이지</dt>
+						<dd>
+							<a th:href="|/ozc/groupDetail/${#authentication.principal.no}|"><span
+								style="background-image: url('/image/icon/mypage-icon.png');"></span>마이페이지</a>
+						</dd>
+						<dd>
+							<a href="/todayAirportInfoList"><span
+								style="background-image: url('/image/icon/today-airport.png');"></span>금일
+								항공 정보 리스트</a>
+						</dd>
+						<dd>
+							<a href="/api/airline"><span
+								style="background-image: url('/image/icon/ticket.png');"></span>항공
+								스케줄 조회</a>
+						</dd>
+						<dd>
+							<a href="/travelWarning"><span
+								style="background-image: url('/image/icon/travel-warning.png');"></span>국가별
+								위험 경보 정보 조회</a>
+						</dd>
+						<dd>
+							<a href="/map"><span
+								style="background-image: url('/image/icon/map.png');"></span>Map API</a>
+						</dd>
+						<dd>
+							<a href="/map/marker"><span
+								style="background-image: url('/image/icon/map-marker.png');"></span>Map Marker</a>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>외부 사이트 연결</dt>
+						<dd>
+							<a href="https://www.wifidosirak.com/"><span
+								style="background-image: url('/image/icon/wi-fi.png');"></span>와이파이도시락</a>
+						</dd>
+						<dd>
+							<a href="/worldTime"><span
+								style="background-image: url('/image/icon/time.png');"></span>세계시간</a>
+						</dd>
+						<dd>
+							<a href="https://togla1382.ncpworkplace.com/v/home/"><span
+								style="background-image: url('/image/icon/works-icon.png');"></span>네이버웍스</a>
+						</dd>
+						<dd>
+							<form action="https://auth.worksmobile.com/oauth2/v2.0/authorize"
+								method="get">
+								<input type="hidden" name="client_id"
+									value="7wBC6EgGh34W2yN1BL1J"> <input type="hidden"
+									name="redirect_uri"
+									value="http://www.mygoodtrip.shop/naver/auth2"> <input
+									type="hidden" name="scope"
+									value="directory,directory.read,orgunit,orgunit.read">
+								<input type="hidden" name="response_type" value="code">
+								<input type="hidden" name="state" value="test"> <span
+									class="side-menu-logo"
+									style="background-image: url('/image/icon/works-icon.png');"></span>
+								<button>네이버API 조직인증</button>
+							</form>
+						</dd>
+						<dd>
+							<form id="mail"
+								onsubmit="window.open('https://mail.worksmobile.com/write/popup', '_blank', 'width=600, height=400,resizeable,scrollbars');">
+								<span class="side-menu-logo"
+									style="background-image: url('/image/icon/works-icon.png');"></span>
+								<button>네이버API 메일연동</button>
+							</form>
+						</dd>
+
+					</dl>
+				</li>
+				<li>
+					<dl class="menuList">
+						<dt>트립몰</dt>
+						<dd>
+							<a href="/mall/list"> <span
+								style="background-image: url('/image/icon/store.png');"></span>
+								바로가기
+							</a>
+						</dd>
+					</dl>
+				</li>
+			</div>
+		</ul>
+	</div>
+	<aside id="chat-bot">
+		<h1>챗봇</h1>
+		<div class="wrap">
+			<button type="button" id="btn-chat-open" onclick="openChat()">트립봇</button>
+			<th:block th:insert="~{chatbot/chat-bot::#chat-disp}" />
+		</div>
+	</aside>
+</header>
+</html>

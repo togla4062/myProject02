@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/organizationChart/departmentManagement.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+	$(function(){
+		$(".edit-mode").hide();
+		$("#insert-mode").hide();
+		$("#complete-mode").hide();
+	});
+	function insertDepartments(){
+		$("#insert-button").hide();
+		$("#insert-mode").show();
+		$("#complete-mode").show();
+	}
+	function resetDepartments(){
+		$("#complete-mode").hide();
+		$("#insert-mode").hide();
+		$("#insert-button").show();
+	}
+</script>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p onclick="location.href='/departments/manage'">부서관리</p>
+			</div>
+			<div class="flex center back-list">
+				<form action="/departments/reg" method="post">
+					<table class="list-table">
+						<tr class="list-2">
+							<th>부서번호</th>
+							<th>부서명</th>
+							<th>부서장</th>
+							<th>수정/삭제</th>
+						</tr>
+						<tr th:each="list : ${departmentList}" class="context-line">
+							<td th:text="${list.departmentNo}">번호</td>
+							<td>[[${list.departmentName}]]</td>
+							<!-- <a th:href="@{/noticeDetail(noticeNo=${list.noticeNo})}"></a> -->
+							<td th:text="${list.departmentHead}">관리자</td>
+							<td class="edit-button">
+								<a th:href="|/departments/editdelete/${list.departmentNo}|">수정/삭제</a>
+							</td>
+						</tr>
+						<tr id="insert-mode">
+							<td>부서등록</td>
+							<td>
+								<input type="text" name="departmentName" placeholder="부서명을 입력하세요" required>
+							</td>
+							<td>
+								<input type="text" name="departmentHead" value="부서 생성 후 등록 가능" disabled>
+							</td>
+							<td></td>
+						</tr>
+					</table>
+					<div class="flex right">
+						<a sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')" class="list-button" id="insert-button"
+						onclick="insertDepartments()">추가</a>
+						<div id="complete-mode">
+							<input type="submit" class="list-button" value="등록">
+							<input type="reset" class="list-button" value="취소" onclick="resetDepartments()">
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

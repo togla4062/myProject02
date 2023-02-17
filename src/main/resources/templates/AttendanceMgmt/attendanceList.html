@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+	th:replace="layout/layout :: layout(~{this::head}, ~{this::main})">
+<head>
+<meta charset="UTF-8">
+<title>근태리스트</title>
+<link rel="stylesheet" href="/css/attendance/attendance-list.css">
+<link rel="stylesheet" href="/css/attendance/paging.css">
+<script type="text/javascript">
+
+function departmentClicked(){
+	department=$("#department option:selected").val();
+	//alert(department);
+	if(department!=0) getListDep();
+	else location.href="/attendanceList";
+}
+
+function getListDep(){
+	$.ajax({
+		url:`/attendanceList/${department}`,
+		type:"get",
+		success:function(result){
+			console.log(result);
+			$("#emp-list").html(result);
+		}
+		,error:function(){
+			alert("다시 힘을 내요");
+		}
+	});
+}
+
+</script>
+
+
+</head>
+<main>
+	<!-- 230104 한아 작성 230111 안나 thymeleaf 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p>전사 근태 리스트</p>
+			</div>
+			<div class="wrap-1">
+				<form class="flex center group-form" >
+					<select id="department" onchange="departmentClicked()">
+						<option value="0" selected>전체 부서</option>
+						<option th:each="departments : ${department}" th:value="${departments.departmentNo}" th:utext="${departments.departmentName}"></option>
+					</select>
+			    </form>
+		    </div>
+ 			<div class="search center flex">
+			    <form>
+			    	<input id="keyword" class="search-input" type="text" name="keyword" placeholder="이름을 입력해 주세요.">
+			    	<button type="submit" class="list-button">검색</button>
+			    </form>
+	    	</div>
+		    <div id="emp-list">
+				<div class="flex center back-list">
+					<table class="list-table">
+						<thead>
+							<tr class="list-2">
+								<th></th>
+								<th>이름</th>
+								<th>부서명</th>
+								<th>직급</th>
+								<th>업무시간</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="list:${list}">
+								<td th:text="${list.employeeNo}">1</td>
+								<td><a th:href="|/personalAttendance/${list.employeeNo}|">[[${list.name}]]</a></td>
+								<td th:text="${list.department}">마케팅팀</td>
+								<td th:text="${list.position}">팀장</td>
+								<td th:if="${list.status} == '근무종료'" th:text="${list.workingHour}"></td>
+								<td th:if="${list.status} != '근무종료'"></td>
+								<td th:text="${list.status}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- 페이징 시작 230117 안나 작성-->
+				<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 내비게이션 숫자 총 몇개로 할건지 -->
+				<div th:if="${#lists.isEmpty(list)}" style="text-align: center;">조회 결과가 없습니다.</div>
+				<div class="pageBTN" id="nav" th:if="${!#lists.isEmpty(list)}">
+					<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center">
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=0|">&lt;&lt;</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=0|">&lt;&lt;</a>
+						</li>
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=${start-endPage}|">&lt;</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=${start-endPage}|">&lt;</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=${pageNo-1}|">[[${pageNo}]]</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지일 경우 -->
+						<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=${pageNo-1}|">[[${pageNo}]]</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=${start+endPage}|">&gt;</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=${start+endPage}|">&gt;</a>
+						</li>
+						<li th:if="${end lt pageTotal}">
+							<a th:if="${check == 1}" th:href="|/attendanceList?page=${pageTotal-1}|">&gt;&gt;</a>
+							<a th:if="${check == 2}" th:href="|/attendanceList?keyword=${keyword}&page=${pageTotal-1}|">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+				<!-- 페이징 끝-->
+			</div>
+		</section>
+	</div>
+</main>
+</html>

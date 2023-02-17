@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<link rel="stylesheet" href="/css/bus/busList.css"/>
+<table>
+	<thead>
+		<tr>
+			<th style="width: 100px; text-align: center;">버스번호</th>
+			<th style="width: 500px; text-align: center;">정류장</th>
+			<th style="width: 100px; text-align: center;">T1첫차시간</th>
+			<th style="width: 100px; text-align: center;">T1막차시간</th>
+			<th style="width: 100px; text-align: center;">T1평일배차시간</th>
+			<th style="width: 100px; text-align: center;">T1주말배차시간</th>
+			<th style="width: 100px; text-align: center;">T2첫차시간</th>
+			<th style="width: 100px; text-align: center;">T2막차시간</th>
+			<th style="width: 100px; text-align: center;">T2평일배차시간</th>
+			<th style="width: 100px; text-align: center;">T2주말배차시간</th>
+			<th style="width: 50px; text-align: center;">회사정보</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="dto:${list}" th:unless="${#strings.isEmpty(dto.t1wdayt) or #strings.isEmpty(dto.t1wt)}">
+			
+			<td style="width: 100px; text-align: center;" th:text="${dto.busnumber}">버스번호</td>
+			<td style="width: 100px; text-align: center;" th:text="${dto.routeinfo}" >정류장</td>
+			<td style="width: 150px; text-align: center;" th:text="${dto.t1endfirst}">T1첫차시간</td>
+			<td style="width: 150px; text-align: center;" th:text="${dto.t1endlast}">T1막차시간</td>
+			<td style="width: 250px; text-align: center;" th:text="${dto.t1wdayt}">T1평일배차시간</td>
+			<td style="width: 250px; text-align: center;" th:text="${dto.t1wt}">T1주말배차시간</td>
+			<td style="width: 150px; text-align: center;" th:text="${dto.t2endfirst}">T2첫차시간</td>
+			<td style="width: 150px; text-align: center;" th:text="${dto.t2endlast}">T2막차시간</td>
+			<td style="width: 250px; text-align: center;" th:text="${dto.t2wdayt}">T2평일배차시간</td>
+			<td style="width: 250px; text-align: center;" th:text="${dto.t2wt}">T2주말배차시간</td>
+			<td style="width: 100px; text-align: center;" th:text="${dto.cpname}">회사정보</td>
+		</tr>
+	</tbody>
+</table>	
+
+</html>

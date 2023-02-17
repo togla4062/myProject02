@@ -1,0 +1,54 @@
+@charset "UTF-8";
+/* groupDetail의 css입니다! */
+
+.mypage-1{
+	padding: 1.5em;
+}
+.mypage-1 div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+.mypage-1 div.page-title{
+	padding-bottom: 1.5em;
+}
+.mypage-table{
+	border-collapse: collapse;
+	padding-bottom: 1em;
+	width: 600px;
+}
+.mypage-table tr td{
+	border-bottom: 3px solid #a4cdf2;
+	text-align: center;
+	 padding: 10px;
+}
+.deleted{
+	background: #666;
+}
+.deleted tr td{
+	border-bottom: 3px solid #222;
+}
+.mypage-table img{
+	height: 100px;
+}
+.mypage-table tr td:nth-child(1){
+	color: #7c7c7c;
+	font-weight: 600;
+}
+.back-1{
+	 padding-top: 10px;
+}
+.back-1 a, .back-1 button{
+	 background-color: #4b99da; 
+	 width: 5em;
+	 margin: 0 auto;
+	 border-radius: 5px;
+	 color: white;
+	 padding: 1px 8px;
+}
+.right {
+	justify-content: flex-end;
+}

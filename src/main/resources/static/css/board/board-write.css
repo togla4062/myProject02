@@ -1,0 +1,85 @@
+@charset "UTF-8";
+
+
+.writer-1{
+	padding: 1.5em;
+}
+.writer-1 div{
+	padding: 15px;
+}
+.writer-back{
+	display: inline-block;
+	border: 5px solid #a4cdf2;
+	border-radius: 20px;
+}
+.writer-1 div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+
+.writer-2{/* 크기 늘렸습니다 1.5 수민 */
+	text-align: center;
+	width: 1200px;
+}
+.writer-title{
+	padding-bottom: 13px;
+	border-bottom: 5px solid #a4cdf2;
+	
+}
+.writer-title input{
+	border: none;
+	padding: 13px 50px 10px 50px;
+	text-align: center;
+	border-radius: 20px;
+}
+.writer-title input::placeholder{
+	color: #636363;
+	font-size: 20px;
+	font-weight: 700;
+}
+.writer-title input:focus{
+	outline: none;
+}
+.writer-content textarea{
+	border: none;
+	text-align: center;
+	padding-top: 30px;
+}
+.writer-content textarea::placeholder{
+	color: #8c8c8c;
+	font-size: 20px;
+	font-weight: 600;
+	
+}
+.writer-content textarea:focus{
+	outline: none;
+}
+.writer-button{
+	display:inline-block;
+	background-color:#a4cdf2;
+	padding:10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #636363;
+}
+.writer-date a{
+	color: #8c8c8c;
+	font-size:16px;
+	font-weight: 600;
+}
+.back-1{
+	 padding-top: 10px;
+}
+.back-1 a{
+	 background-color: #4b99da; 
+	 width: 5em;
+	 margin: 0 auto;
+	 border-radius: 10px;
+	 color: white;
+	 padding: 1px;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/organizationChart/departmentEditMode.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+	$(function(){
+		
+	});
+	
+	function removeCheck(no){
+		if (confirm("부서에 속한 사원이 없을 때만 부서가 삭제됩니다.\n정말 삭제하시겠습니까?")==true){    //확인
+			$.ajax({
+				url:`/departments/delete/${no}`,
+				type:'post',
+			})
+			.done(function(){
+				alert("삭제가 완료되었습니다!");
+				location.href="/departments/manage";
+			})
+			.fail(function(){
+				alert("삭제에 실패하였습니다. 사원을 모두 제거한 후 부서 삭제가 가능합니다.")
+				location.href="/departments/manage";
+			})
+			
+		} else{   //취소
+			return ;
+		}
+	};
+	
+</script>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p class="title">부서관리</p>
+			</div>
+				<a sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')" class="list-button flex right"
+					onclick="location.href='/departments/manage'">돌아가기</a>
+			<div class="back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>부서번호</th>
+						<th>부서명</th>
+						<th>부서장</th>
+						<th>수정/삭제</th>
+					</tr>
+					<tr>
+					<form th:action="|/departments/edit/${departmentInfo.departmentNo}|">
+						<td th:text="${departmentInfo.departmentNo}">번호</td>
+						<td><input type="text" name="departmentName" th:value="${departmentInfo.departmentName}" size="15"></td>
+						<td>
+							<select name="departmentHead">
+								<option></option>
+								<option th:each="employees : ${employeesByDepartment}" th:value="${employees.name}" th:utext="${employees.name}" th:selected="${employees.name}==${departmentInfo.departmentHead}"></option>
+							</select>
+						</td>
+						<td class="">
+							<button type="submit">수정완료</button>
+							<button type="button" th:onclick="|removeCheck(${departmentInfo.departmentNo});|">삭제</button>
+						</td>
+					</form>
+					</tr>
+				</table>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

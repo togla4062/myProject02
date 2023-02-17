@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<style type="text/css">
+	
+		table {
+			border: 1px solid #000;
+			border-collapse: collapse;
+			text-align: center;
+			align-content: center;
+		}
+		
+		.alhead tr th{
+			border: 1px solid #000;
+		}
+		.albody tr td{
+			border: 1px solid #000;
+		}
+		.name{
+			width: 120px;
+		}
+		.fal{
+			width: 200px;
+		}
+		.eal{
+			width: 100px;
+		}
+		.week{
+			width: 500px;
+		}
+		.art{
+			width: 100px;
+		}
+		.ed{
+			width: 100px;
+		}
+		.gt{
+			width: 100px;
+		}		
+	</style>
+	
+</head>
+<br>
+	<table style="width: 1200px">
+		<thead class="alhead">
+			<tr style="background-color: #008aff; height: 3em; color: white;">
+				<th class="name" rowspan="2">항공사</th>
+				<th class="fal" rowspan="2">출발 공항</th>
+				<th class="eal" rowspan="2">도착 공항</th>
+				<th class="week" colspan="7">요일별 운항 정보</th>
+				<th class="gt" rowspan="2">출발시간</th>
+				<th class="art" rowspan="2">도착시간</th>
+				<th class="ed" rowspan="2">운항 종료일</th>
+			</tr>
+			<tr style="background-color: #008aff; height: 3em; color: white;">
+				<th>일</th>
+				<th>월</th>
+				<th>화</th>
+				<th>수</th>
+				<th>목</th>
+				<th>금</th>
+				<th>토</th>
+			</tr>
+		</thead>
+		<tbody class="albody">
+			<tr th:each="ald:${ald}">
+				<td th:text="${ald.airlineKorean}">항공사</td>
+				<td th:text="${ald.startcity}">출발 공항</td>
+				<td th:text="${ald.arrivalcity}">도착 공항</td>
+				<th:block th:switch="${ald.domesticSun}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticMon}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticTue}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticWed}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticThu}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticFri}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>
+				<th:block th:switch="${ald.domesticSat}">
+					<td th:case="Y"><img style="width: 20px; height: 20px;" src="/image/icon/flight.svg"></td>
+					<td th:case="N"><img style="width: 20px; height: 20px;" src="/image/icon/notflight.svg"></td>
+				</th:block>				
+				<td th:text="${ald.domesticStartTime}">출발시간</td>
+				<td th:text="${ald.domesticArrivalTime}">도착시간</td>
+				<td th:text="${ald.domesticEddate}">운항 종료일</td>
+			</tr>
+		</tbody>
+	</table>
+	
+
+</html>

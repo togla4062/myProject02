@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>날씨정보조회</title>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" th:href="@{/css/weather/weather-list.css}">
+
+<script src="/js/index/chat-weather.js"></script>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="/js/index/mapConvertGridXy.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=fedd5a1947ac36afb141864c5a3581cb&libraries=services"></script>
+<script>
+$(function(){
+	$("#question").keyup(questionKeyuped);
+	//현재 날짜
+	var today = new Date();
+	var year = today.getFullYear();
+	var month = ('0' + (today.getMonth() + 1)).slice(-2);
+	var day = ('0' + today.getDate()).slice(-2);
+	var baseDate = year + month + day;
+	//현재 시각
+	var hours = ('0' + today.getHours()).slice(-2); 
+	console.log(hours);
+	// baseTime과 baseDate 현재시각에 맞게 변경
+	if (0 <= hours &&  hours <= 1) {
+		
+		var baseTime = '2300'; // 0시~1시 사이일때는 전날의 23시 날씨 데이터를 가져와야합니다.
+		
+		var yesterDay = new Date(today.setDate(today.getDate()-1)); // 전날
+		
+		year = yesterDay.getFullYear();
+		month = ('0' + (yesterDay.getMonth() + 1)).slice(-2);
+		day = ('0' + yesterDay.getDate()).slice(-2);
+		baseDate = year + month + day; // yyyymmdd형식으로 변환
+		
+	} else if (2 <= hours &&  hours < 5) {
+		baseTime = '0200';
+	} else if (5 <= hours &&  hours < 8) {
+		baseTime = '0500';
+	} else if (8 <= hours &&  hours < 11) {
+		baseTime = '0800';
+	} else if (11 <= hours &&  hours < 14) {
+		baseTime = '1100';
+	} else if (14 <= hours &&  hours < 17) {
+		baseTime = '1400';
+	} else if (17 <= hours &&  hours < 20) {
+		baseTime = '1700';
+	} else if (20 <= hours &&  hours < 23) {
+		baseTime = '2000';
+	} else if (23 <= hours) {
+		baseTime = '2300';
+	}
+
+	
+		$.ajax({
+		url:"/weather/info",
+	 	data:{
+			nx: 61,
+	 		ny: 129,//상계동 좌표
+	 		baseDate:baseDate,
+	 		baseTime:baseTime
+		},
+		success:function(result){
+			$("#disp").html(result);
+		}
+	});//ajax
+	
+});//ready function
+
+
+/* //position을 입력받아 위경도좌표얻기 : kakao api활용
+function weatherInfo(event) {
+	event.preventDefault();
+	var position=$("#positionss").val().trim();
+	var tdate=$("#t-date").val().trim();
+	var ttime=$("#t-time").val().trim();
+	// 주소-좌표 변환 객체를 생성합니다
+	var geocoder = new kakao.maps.services.Geocoder();
+	// 주소로 좌표를 검색합니다
+	geocoder.addressSearch(position, function(result, status) {
+	    // 정상적으로 검색이 완료됐으면 
+	     if (status === kakao.maps.services.Status.OK) {
+	    	 console.log("y:" + result[0].y);//위도
+	    	 console.log("x:" + result[0].x);//경도
+	    	 
+	    	 var rs=dfs_xy_conv("toXY", result[0].y, result[0].x);
+	    	 console.log(rs.x);
+	    	 console.log(rs.y);
+	    	 
+	    	 $.ajax({
+	    		 url:"/weather/info",
+	    		 data:{
+	    			 nx: rs.x,
+	    	 		 ny: rs.y,
+	    	 		 baseDate:tdate,
+	    	 		 baseTime:ttime
+	    		 },
+	    		 success:function(result){
+	    			 $("#disp").html(result);
+	    		 }
+	    	 });//ajax
+	    }//kakao.maps.services.Status.OK
+	});//geocoder.addressSearch
+}//weatherInfo */
+	
+</script>
+<th:block th:insert="~{/layout/sideMenu2 :: head}" /><!--  -->
+</head>
+<body>
+	<main>
+		<th:block th:insert="~{/layout/sideMenu2 :: header}" /><!--  -->
+			<div style="margin: auto; align-content: center;">
+			<div class="wTop">
+				<p>날씨정보</p>
+			</div>
+			<!-- <div class="wMid">
+				<form onsubmit="weatherInfo(event)"> 
+					<input type="search" placeholder="지역입력" id="positionss">
+					<input type="text" placeholder="날짜 예(20110101)" id="t-date">
+					<input type="text" placeholder="시간 예(0500)" id="t-time">
+					<button>검색</button>
+				</form>
+			</div> -->
+			<div id="disp">
+	
+			</div>
+			</div>
+			<aside id="chat-bot">
+				<h1>챗봇</h1>
+				<div class="wrap">
+					<button type="button" id="btn-chat-open" onclick="openChat()">날씨안내봇</button>
+					<th:block th:insert="~{chatbot/chat-bot-weather::#chat-disp}" />
+				</div>
+			</aside>
+			
+		
+	</main>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/organizationChart/groupList.css">
+<link rel="stylesheet" href="/css/organizationChart/groupList2.css">
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+function departmentClicked(){
+	department=$("#department option:selected").val();
+	if(department!=0)
+		location.href="/ozc/groupList/"+department;
+	else location.href="/ozc/groupList";
+}
+</script>
+
+</head>
+<main id="listbydepartment">
+	<!-- 230110 한아 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>사원명</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>내선번호</th>
+						<th>주업무</th>
+					</tr>
+					<tbody id="emp-list">
+						<tr th:if="${nullcheck == true}">
+							<td colspan="5">해당 부서에 등록된 사원이 없습니다.</td>
+						</tr>
+						<tr th:if="${nullcheck == false}" th:each="list : ${list2}">
+							<td><a th:href="|/ozc/groupDetail/${list.no}|">[[${list.name}]]</a></td>
+							<td th:text="${list.departmentNo.departmentName}">부서</td>
+							<td th:text="${list.position.label}">직급</td>
+							<td th:text="${list.extension}">내선번호</td>
+							<td th:text="${list.mainWork}">주업무</td>
+				            <!-- 수민 추가! css 사용해서 조직도에는 안보이게 했습니다!  -->
+				           	<td class="group-non" style="color: rgb(1, 20, 190)" th:if="${list.empGrade == null}" th:text="평가안함">등급</td>
+					        <td class="group-non" th:if="${list.empGrade != null}" th:text="${list.empGrade}" >등급</td>
+					        <td class="group-non"> 
+					        	<a th:href="|/personnelEva/${list.no}|">인사평가</a>					
+				          	</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

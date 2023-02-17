@@ -1,0 +1,24 @@
+@charset "UTF-8";
+/* body 스타일 */
+#calendar-container {
+	overflow: hidden;
+	font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+	font-size: 14px;
+}
+/* 캘린더 위의 해더 스타일(날짜가 있는 부분) */
+.fc-header-toolbar {
+	padding-top: 1em;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+#calendar {
+	width: 1200px;
+}
+
+.fc-day-number.fc-sat.fc-past {
+	color: #0000FF;
+} /* 토요일 */
+.fc-day-number.fc-sun.fc-past {
+	color: #FF0000;
+} /* 일요일 */

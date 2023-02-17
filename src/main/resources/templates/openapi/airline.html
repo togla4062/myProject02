@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>항공 스케줄 조회</title>
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+
+<link rel="stylesheet" href="/css/sideMenu/sideMenu.css">
+<link rel="stylesheet" href="/css/commons/chat-bot.css">
+<script src="/js/sideMenu/sideMenu.js"></script>
+<script src="/js/index/chat.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+.putdate {
+	display: inline-block;
+	height: 50px;
+}
+.top-menu {
+	margin: 30px auto;
+	padding: 10px;
+	background-color: #4b99da;
+	border-radius: 15px;
+	font-size: 20px;
+	color: white;
+	width: 150px;
+	text-align: center;
+}
+
+main {
+	display: block !important;
+	padding-left: 20px;
+}
+</style>
+</head>
+<body>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<!--  -->
+	<script>
+	var pageNo=1;
+	var date=new Date();
+	var year=String(date.getFullYear());
+	var month=String(date.getMonth()+1);
+	var day=String(date.getDate());
+	
+	if(month.length==1){
+		month="0"+month;
+	}
+	if(day.length==1){
+		day="0"+day;
+	}
+	var outstreamDate = year+"-"+month+"-"+day;
+	var today=year+month+day;
+	
+	$(function(){
+		findAirlineInfo(today,pageNo,"GMP","");
+		$('#ymd').val(outstreamDate).prop("selected", true);
+		$('#chul').val("GMP").prop("selected", true);
+	});
+	
+	function forward(event){
+		pageNo=pageNo+1;
+		console.log(pageNo);
+		getAirlineInfo(event);
+	}
+	
+	function back(event){
+		if(pageNo!=1){
+			pageNo=pageNo-1;
+			console.log(pageNo);
+			getAirlineInfo(event);
+		}else{
+			return
+		}
+	} 
+
+	function getAirlineInfo(event){
+		
+		var inputDate = String($("#ymd").val().trim());
+		var regex=/[^0-9]/g;
+		var schDate = inputDate.replace(regex,"");
+		console.log(schDate);				
+		event.preventDefault();	
+		var schDeptCityCode=$("#chul").val().trim();
+		var schArrvCityCode=$("#do").val().trim();		
+	
+		findAirlineInfo(schDate,pageNo,schDeptCityCode,schArrvCityCode);
+	}
+	function findAirlineInfo(schDate,pageNo,schDeptCityCode,schArrvCityCode){
+		$.ajax({
+			url:"/api/airline/ajax",
+			data:
+				{
+				schDate:schDate,
+				pageNo:pageNo,
+				schDeptCityCode:schDeptCityCode,
+				schArrvCityCode:schArrvCityCode
+				},
+			success:function(airlinelist){
+				$("#airline-display").html(airlinelist);
+			}
+		});
+
+	}
+	function changeArrCity(){
+		$('#do').val('').prop("selected", true);
+	}
+	function changeDepCity(){
+		$('#chul').val('').prop("selected", true);
+	}
+</script>
+	<main>
+	<p class="top-menu">항공 스케줄 조회</p>
+		<form class="putdate" onsubmit="getAirlineInfo(event)">
+			<div>
+				<label>날짜 <input type="date" id="ymd">
+				</label> <label>출발공항 <select id="chul" onchange="changeArrCity()">
+						<option value="">없음</option>
+						<option value="GMP">김포(GIMPO)</option>
+						<option value="ICN">인천(INCHEON)</option>
+						<option value="CJU">제주(JEJU)</option>
+						<option value="TAE">대구(DAEGU)</option>
+						<option value="USN">울산(ULSAN)</option>
+						<option value="CJJ">청주(CHEONGJU)</option>
+						<option value="WJU">원주(WONJU)</option>
+						<option value="YNY">양양(YANGYANG)</option>
+						<option value="MWX">무안(MUAN)</option>
+						<option value="KWJ">광주(GWANGJU)</option>
+						<option value="RSU">여수(YEOSU)</option>
+						<option value="KPO">포항(POHANG)</option>
+						<option value="KUV">군산(GUNSAN)</option>
+				</select>
+				</label> <label>도착공항 <select id="do" onchange="changeDepCity()">
+						<option value="">없음</option>
+						<option value="GMP">김포(GIMPO)</option>
+						<option value="ICN">인천(INCHEON)</option>
+						<option value="CJU">제주(JEJU)</option>
+						<option value="TAE">대구(DAEGU)</option>
+						<option value="USN">울산(ULSAN)</option>
+						<option value="CJJ">청주(CHEONGJU)</option>
+						<option value="WJU">원주(WONJU)</option>
+						<option value="YNY">양양(YANGYANG)</option>
+						<option value="MWX">무안(MUAN)</option>
+						<option value="KWJ">광주(GWANGJU)</option>
+						<option value="RSU">여수(YEOSU)</option>
+						<option value="KPO">포항(POHANG)</option>
+						<option value="KUV">군산(GUNSAN)</option>
+				</select>
+				</label>
+				<button>
+					<img src="/image/icon/search.svg"
+						style="vertical-align: middle; height: 25px; width: 25px;">
+				</button>
+			</div>
+		</form>
+
+		<div id="airline-display">
+			<br>
+			<p>항공 운항 정보</p>
+		</div>
+		<button onclick="back(event)" type="submit"
+			style="height: 30px; width: 30px;">
+			<img style="height: 30px; width: 30px;" src="/image/icon/back.svg">
+		</button>
+
+		<button onclick="forward(event)" type="submit"
+			style="height: 30px; width: 30px;">
+			<img style="height: 30px; width: 30px;" src="/image/icon/forward.svg">
+		</button>
+	</main>
+</body>
+</html>

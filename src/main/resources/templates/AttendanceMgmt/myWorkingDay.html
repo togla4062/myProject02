@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+	th:replace="layout/layout :: layout(~{this::head}, ~{this::main})">
+<head>
+<meta charset="UTF-8">
+<title>근태리스트</title>
+	<link rel="stylesheet" href="/css/attendance/my-working-day.css">
+	<script src="/js/attendance/defalutTime.js"></script>
+	<link rel="stylesheet" href="/css/attendance/dateSearch.css">
+</head>
+<main>
+	<!-- 230104 한아 작성 230111 안나 thymeleaf 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center title">
+				<p>내 근무</p>
+			</div>
+			<div class="flex att-btn">
+				<a href="/myAttendance"><button><span class="small-circle"></span>근태</button></a>
+				<button>
+					<span class="small-circle-selected"></span>근무
+				</button>
+				<button onclick="location.href = 'myDayOff'">
+					<span class="small-circle"></span>휴가
+				</button>
+			</div>
+			<div class="search center flex">
+				<form action="/myWorkingDay/dateSearch" method="get">
+			    	<input class="search-input" id="dateStart" type="date" name="dateStart">
+			    	<a>~</a>
+			    	<input class="search-input" id="dateEnd" type="date" name="dateEnd">
+			    	<button type="submit" class="list-button">검색</button>
+			    </form>
+			</div>
+			<div class="flex center back-list">
+				<table class="list-table">
+					<thead>
+						<tr class="list-2">
+							<th></th>
+							<th>일자</th>
+							<th>출근시간</th>
+							<th>퇴근시간</th>
+							<th>일근무시간</th>
+							<th>지정근무시간</th>
+							<th>근태항목</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="myAttList:${myAttList}">
+							<td th:text="${myAttListStat.count}">2</td>
+							<td th:text="${myAttList.date}">2023-01-09</td>
+							<td th:if="${myAttList.status != '미출근' and myAttList.status !='휴가'}" th:text="${myAttList.clockIn}"></td>
+							<td th:if="${myAttList.status == '미출근' or myAttList.status =='휴가'}">-</td>
+							<td th:if="${myAttList.status == '근무종료'}" th:text="${myAttList.clockOut}"></td>
+							<td th:if="${myAttList.status != '근무종료'}">-</td>
+							<td th:if="${myAttList.status == '근무종료'}" th:text="${myAttList.workingHour}"></td>
+							<td th:if="${myAttList.status != '근무종료'}">-</td>
+							<td th:text="${myAttList.designatedWorkingHour}"></td>
+							<td th:text="${myAttList.status}">휴가</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 페이징 시작 230117 안나 작성-->
+			<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 한 페이지당 몇 개까지 보여줄건지 -->
+			<div th:if="${#lists.isEmpty(myAttList)}" style="text-align: center;">조회 결과가 없습니다.</div>
+			<div class="pageBTN" th:if="${!#lists.isEmpty(myAttList)}">
+				<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center">
+					<!-- 시작 페이지가 1보다 클 경우 -->
+					<li th:if="${start ne 1}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=0|">&lt;&lt;</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=0|">&lt;&lt;</a>
+					</li>
+					<!-- 시작 페이지가 1보다 클 경우 -->
+					<li th:if="${start ne 1}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=${start-endPage}|">&lt;</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${start-endPage}|">&lt;</a>
+					</li>
+					<!-- 마지막 페이지가 아닐 경우 -->
+					<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=${pageNo-1}|">[[${pageNo}]]</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageNo-1}|">[[${pageNo}]]</a>
+					</li>
+					<!-- 마지막 페이지일 경우 -->
+					<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=${pageNo-1}|">[[${pageNo}]]</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageNo-1}|">[[${pageNo}]]</a>
+					</li>
+					<!-- 마지막 페이지가 아닐 경우 -->
+					<li th:if="${end lt pageTotal}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=${start+endPage}|">&gt;</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${start+endPage}|">&gt;</a>
+					</li>
+					<li th:if="${end lt pageTotal}">
+						<a th:if="${check == null}" th:href="|/myWorkingDay?page=${pageTotal-1}|">&gt;&gt;</a>
+						<a th:if="${check == 2}" th:href="|/myWorkingDay/dateSearch?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageTotal-1}|">&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
+			<!-- 페이징 끝-->
+		</section>
+	</div>
+</main>
+</html>

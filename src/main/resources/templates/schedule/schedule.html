@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<!-- Font Awesome -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+	rel="stylesheet" />
+<!-- Google Fonts -->
+<link
+	href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+	rel="stylesheet" />
+<!-- MDB -->
+<link
+	href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.css"
+	rel="stylesheet" />
+<!-- MDB -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.1.0/mdb.min.js"></script>
+	
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="/js/schedule/schedule.js"></script>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<link rel="stylesheet" href="/css/schedule/schedule.css">
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p>[[${#authentication.principal.name}]] 의 일정 리스트</p>
+			</div>
+			<div id="headerBtn" class="flex between">
+				<input type="date" id="changeDate" th:value="${date}"
+					th:name="thisDate" onchange="changeDate()">
+				<button class="flex right list-button btn btn-primary" type="button"
+					data-mdb-toggle="modal" data-mdb-target="#staticBackdrop5" id="as">등록하기</button>
+			</div>
+			<div class="flex center back-list">
+				<table id="list" class="list-table">
+					<tr class="list-2">
+						<th>번호</th>
+						<th>날짜</th>
+						<th>종류</th>
+						<th>상세내용</th>
+						<th>시작날짜</th>
+						<th>종료날짜</th>
+						<th>비고</th>
+					</tr>
+					<tr th:if="${todaySchedule.isEmpty()}">
+						<td colspan="7">오늘의 일정이 없습니다.</td>
+					</tr>
+					<tr th:if="${todaySchedule.isEmpty()}==false" th:each="list : ${todaySchedule}">
+						<form action="/scheduleUpdate" method="post">
+							<td id="num"><!-- 일정번호 --></td>
+							<td th:text="${date}">날짜</td>
+							<td class="show-mode" th:text="${list.scheduleName}">종류</td>
+							<td class="edit-mode"><select name="scheduleName">
+									<option value="미팅">미팅</option>
+									<option value="야근">야근</option>
+									<option value="회의">회의</option>
+									<option value="면접">면접</option>
+									<option value="출장">출장</option>
+							</select></td>
+							<td class="show-mode" th:text="${list.title}">상세내용</td>
+							<td class="edit-mode"><input type="text"
+								th:value="${list.title}" th:name="title" /></td>
+							<td class="show-mode" th:text="${list.startDate}">시작</td>
+							<td class="edit-mode"><input type="date"
+								th:value="${list.startDate}" th:name="startDate" /></td>
+							<td class="show-mode" th:text="${list.endDate}">종료</td>
+							<td class="edit-mode">
+								<input type="date" th:value="${list.endDate}" th:name="endDate" />
+							</td>
+							<td class="edit-mode" width="210px">
+								<div class="flex between">
+									<a class="list-button" onclick="chageShowMode(this)">[수정취소]</a>
+									<input type="hidden" th:value="${list.scheduleNo}"
+										th:name="scheduleNo"> <input type="hidden"
+										th:value="${date}" th:name="date">
+									<button class="list-button">[수정완료]</button>
+								</div>
+							</td>
+						</form>
+						<td class="show-mode" width="210px">
+							<div class="flex between">
+								<a class="list-button" onclick="chageEditMode(this)">[일정수정]</a>
+								<form action="/scheduleDelete" method="post" id="scheduleDel">
+									<input type="hidden" th:value="${list.scheduleNo}"th:name="scheduleNo"> 
+									<input type="hidden" th:value="${date}" th:name="date">
+									<button type="button" onclick="scheduleDelCheck(this)" class="list-button">[일정삭제]</button>
+								</form>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</section>
+	</div>
+</main>
+
+<!-- Modal -->
+<div class="modal top fade" id="staticBackdrop5" tabindex="-1"
+	aria-labelledby="exampleModalLabel" aria-hidden="true"
+	data-mdb-backdrop="true" data-mdb-keyboard="true">
+	<div
+		class="modal-dialog modal-dialog-centered text-center d-flex justify-content-center">
+		<div class="modal-content w-75">
+			<div class="modal-body p-4">
+				<img th:src="${#authentication.principal.imageNo.url}" alt="avatar"
+					class="rounded-circle position-absolute top-0 start-50 translate-middle h-50" />
+				<form action="/schedulePlus" method="post">
+					<!-- select input -->
+					<p id="data-start" class="form-label">일정 종류 선택</p>
+					<div class="form-outline mb-4">
+						<select id="select" name="select">
+							<option value="미팅">미팅</option>
+							<option value="야근">야근</option>
+							<option value="회의">회의</option>
+							<option value="면접">면접</option>
+							<option value="출장">출장</option>
+						</select>
+
+					</div>
+					<!-- title input -->
+					<p class="form-label">일정 상세 내용</p>
+					<div class="form-outline mb-4">
+						<input type="text" id="title" name="title" class="form-control" />
+					</div>
+					<!-- StartDate input -->
+					<p class="form-label">일정 시작 날짜</p>
+					<div class="form-outline mb-4">
+						<input type="date" id="start" name="start" class="form-control" />
+					</div>
+
+					<!-- EndDate input -->
+					<p class="form-label">일정 종료 날짜</p>
+					<div class="form-outline mb-4">
+						<input type="date" id="end" name="end" class="form-control" />
+					</div>
+
+					<!-- Submit button -->
+					<button type="submit" class="btn btn-primary btn-block">일정
+						등록</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal -->
+</html>

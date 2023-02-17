@@ -1,0 +1,294 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.min.js"></script>
+<script src="/js/index/indexcalendar.js"></script>
+<script src="/js/index/index.js"></script>
+<!--아이콘 -->
+<script defer
+	src="https://use.fontawesome.com/releases/v5.15.2/js/all.js"
+	integrity="sha384-vuFJ2JiSdUpXLKGK+tDteQZBqNlMwAjhZ3TvPaDfN9QmbPb7Q8qUpbSNapQev3YF"
+	crossorigin="anonymous"></script>
+</head>
+<body>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div id="backIMG">
+		<section class="flex">
+			<div>
+				<section id="approval">
+					<!-- 결제 리스트 보드 -->
+					<p class="subtitle">내 결재 리스트</p>
+					<table class="list-table textcenter">
+						<tr class="list-2">
+							<th width="80px">종류</th>
+							<th width="100px">기안자</th>
+							<th width="150px">상세내용</th>
+							<th width="80px">시작날짜</th>
+							<th width="80px">끝 날짜</th>
+							<th width="120px" height="30px">결재상태</th>
+						</tr>
+						<tr th:if="${approvalList.isEmpty()}">
+							<td height="30px" colspan="6">결제할 내역이 없습니다</td>
+						</tr>
+						<tr th:if="${not #strings.isEmpty(approvalList)}" class="list-2"
+							th:each="approvalList : ${approvalList}">
+							<td th:text="${approvalList.type}">[종류]</td>
+							<td th:text="${approvalList.employeeNo.name}">[기안자]</td>
+							<td th:text="${approvalList.reason}">[상세내용]</td>
+							<td
+								th:text="${#temporals.format(approvalList.startDate,'MM/dd')}">[종류]</td>
+							<td th:text="${#temporals.format(approvalList.EndDate,'MM/dd')}">[상세내용]</td>
+							<td height="30px" th:text="${approvalList.approval.label}">[결제
+								상태]</td>
+						</tr>
+					</table>
+				</section>
+			</div>
+			<div>
+				<section id="schedule" class="counting-list textcenter">
+					<!-- 금일일정 -->
+					<p class="subtitle goto-detail" onclick="gotoTodaySchedule()">금일
+						일정</p>
+					<input type="hidden" th:value="${today}" id="today">
+					<table id="list" class="list-table">
+						<tr class="list-2">
+							<th width="50px" height="30px">번호</th>
+							<th width="100px">종류</th>
+							<th width="450px">상세내용</th>
+						</tr>
+						<tr th:if="${todaySchedule.isEmpty()}">
+							<td height="30px" colspan="3">오늘 일정이 없습니다</td>
+						</tr>
+						<tr th:if="${not #strings.isEmpty(todaySchedule)}" class="list-2"
+							th:each="todaySchedule : ${todaySchedule}">
+							<td height="30px" class="counting-num">
+								<!-- 글번호 -->
+							</td>
+							<td th:text="${todaySchedule.scheduleName}">[종류]</td>
+							<td th:text="${todaySchedule.title}">[상세내용]</td>
+						</tr>
+					</table>
+				</section>
+				<section id="tomorrowSchedule" class="counting-list">
+					<!-- 내일일정 -->
+					<p class="subtitle goto-detail" onclick="gotoTomorrowSchedule()">익일
+						일정</p>
+					<input type="hidden" th:value="${tomorrow}" id="tomorrowDate">
+					<table id="list" class="list-table textcenter">
+						<tr class="list-2">
+							<th width="50px" height="30px" class="textcenter">번호</th>
+							<th width="100px">종류</th>
+							<th width="450px">상세내용</th>
+						</tr>
+						<tr th:if="${tomorrowSchedule.isEmpty()}">
+							<td height="30px" colspan="3">내일 일정이 없습니다</td>
+						</tr>
+						<tr th:if="${not #strings.isEmpty(tomorrowSchedule)}"
+							class="list-2" th:each="tomorrowSchedule : ${tomorrowSchedule}">
+							<td height="30px" class="counting-num">
+								<!-- 글번호 -->
+							</td>
+							<td th:text="${tomorrowSchedule.scheduleName}">[종류]</td>
+							<td th:text="${tomorrowSchedule.title}">[상세내용]</td>
+						</tr>
+					</table>
+				</section>
+			</div>
+			<div>
+				<section id="attendance">
+					<!-- 230111 출퇴근버튼 시작 안나 230120 수정 안나 -->
+					<p class="subtitle">출근/퇴근 버튼</p>
+					<div class="flex around">
+						<button class="att-btn" id="start-time">출근</button>
+						<button class="att-btn" id="end-time">퇴근</button>
+
+					</div>
+					<div sec:authorize="isAuthenticated()" id="clock-in-out"
+						th:each="dto:${list}" class="flex around">
+						<div>
+							<p>출근시간 :</p>
+							<input id="status" type="hidden" th:value="${dto.status}">
+							<p id="start-time-today"
+								th:text="${#temporals.format(dto.clockIn, 'HH:mm:SS')}"></p>
+						</div>
+						<div>
+							<p>퇴근시간 :</p>
+							<p id="end-time-today"
+								th:text="${#temporals.format(dto.clockOut, 'HH:mm:SS')}"></p>
+						</div>
+					</div>
+					<!-- 230111 출퇴근버튼 끝 안나 -->
+				</section>
+				<section id="calendar">
+					<!-- 230111 문대현 -->
+					<!-- calendar 태그 -->
+					<div id='calendar-container'>
+						<div id='calendar' style="width: 320px"></div>
+					</div>
+				</section>
+			</div>
+		</section>
+		<section class="flex">
+			<section id="boards">
+				<p class="subtitle">게시판</p>
+				<div class="flex">
+					<button type="button" id="notice-board" onclick="selectNotice()">공지사항</button>
+					<button type="button" id="cnc-board" onclick="selectCNC()">경조사</button>
+					<button type="button" id="suggest-board" onclick="selectsuggest()">건의사항</button>
+				</div>
+				<section id="indexBoardShow">
+					<!-- 게시글 보여줄 곳 -->
+				</section>
+			</section>
+			<section id="exchange">
+				<p class="subtitle"
+					th:text="${#temporals.format(today,'yy년 MM월 dd일')}+' 환율'">오늘자
+					환율</p>
+				<div class="flex between" style="padding-left: 5px">
+					<iframe
+						src="https://sbiz.wooribank.com/biz/Dream?withyou=FXCNT0002&rc=0&divType=1&lang=KOR"
+						frameBorder=0 width="210px" scrolling=no height=184 topmargin="0"
+						name=irate marginWidth=0 marginHeight=0 title="무료환율표A형"></iframe>
+					<iframe
+						src="https://sbiz.wooribank.com/biz/Dream?withyou=FXCNT0006&rc=0&divType=1&lang=KOR"
+						frameBorder=0 width="210px" scrolling=no height=184 topmargin="0"
+						name=irate marginWidth=0 marginHeight=0 title="무료환율표A형"></iframe>
+					<iframe
+						src="https://sbiz.wooribank.com/biz/Dream?withyou=FXCNT0002&rc=0&divType=6&lang=KOR"
+						frameBorder=0 width="210px" scrolling=no height=184 topmargin="0"
+						name=irate marginWidth=0 marginHeight=0 title="무료환율표A형"></iframe>
+
+				</div>
+				<iframe
+					src="https://sbiz.wooribank.com/biz/Dream?withyou=FXCNT0007&rc=0&divType=1&lang=KOR"
+					frameBorder=0 width=600 scrolling=no height=184 topmargin="0"
+					name=irate marginWidth=0 marginHeight=0 title="무료환율표A형"></iframe>
+			</section>
+		</section>
+		<section class="flex">
+			<section id="newEmp">
+				<!-- 신입사원 -->
+				<p class="subtitle">화제의 신입사원</p>
+				<div class="flex around textcenter">
+					<ul th:each="list : ${NewEMPList}" class="indexEMPInfo">
+						<li class="newEmployeesImg"
+							th:style="|background-image: url('${list.imageNo.url}');|"></li>
+						<li th:text="${list.name}"></li>
+						<li
+							th:text="'입사일 : '+${#temporals.format(list.joinDate,'MM월 dd일')}"></li>
+					</ul>
+				</div>
+			</section>
+			<section id="awardEmp">
+				<!-- 우수사원 -->
+				<p class="subtitle">이달의 우수사원</p>
+				<div class="flex around textcenter">
+					<ul th:if="${AwardEMPList.isEmpty()}">
+						<li>이달의 우수사원이 없습니다.</li>
+					</ul>
+					<ul th:if="${AwardEMPList.isEmpty()}==false"
+						th:each="list : ${AwardEMPList}" class="indexEMPInfo">
+						<li class="newEmployeesImg"
+							th:style="|background-image: url('${list.imageNo.url}');|"></li>
+						<li th:text="${list.name}"></li>
+						<li
+							th:text="'입사일 : '+${#temporals.format(list.joinDate,'MM월 dd일')}"></li>
+					</ul>
+				</div>
+			</section>
+			<section id="Today-weather">
+				<p class="subtitle"
+					th:text="${#temporals.format(today,'MM월 dd일')}+' 날씨'">오늘날씨</p>
+				<select id="cityName" class="textcenter"
+					onchange="changeCityWeather(this)">
+					<option value="New York">뉴욕</option>
+					<option value="Tokyo">도쿄</option>
+					<option value="Beijing">베이징</option>
+					<option value="New Delhi">뉴델리</option>
+					<option value="Bangkok">방콕</option>
+					<option value="Hanoi">하노이</option>
+					<option value="Paris">파리</option>
+					<option value="Berlin">베를린</option>
+					<option value="Athens">아테네</option>
+					<option value="Rome">로마</option>
+					<option value="Lisbon">리스본</option>
+					<option value="Madrid">마드리드</option>
+					<option value="London">런던</option>
+					<option value="Vatican City">바티칸시티</option>
+				</select>
+				<!-- 서울 날씨 -->
+				<div
+					style="background-color: rgb(101, 178, 255); color: #fff; height: 100px; width: 540px; border-radius: 20px;">
+					<div style="float: left; margin-top: 20px; margin-left: 30px">
+						<div class="weather_icon"></div>
+					</div>
+					<br>
+					<div class="flex"
+						style="float: right; margin: -10px 0px 0px 30px; padding-right: 20px; font-size: 11pt">
+						<div style="margin-right: 20px;">
+							<div class="temp_min"></div>
+							<div class="temp_max"></div>
+							<div class="humidity"></div>
+						</div>
+						<div>
+							<div class="wind"></div>
+							<div class="cloud"></div>
+						</div>
+					</div>
+					<div class="flex"
+						style="float: right; margin-top: -20px; position: relative;">
+						<div class="current_temp"
+							style="font-size: 40pt; margin-right: 10px"></div>
+						<div>
+							<div class="weather_description"
+								style="font-size: 16pt; margin-top: 10px;"></div>
+							<div class="city" style="font-size: 13pt"></div>
+						</div>
+					</div>
+				</div>
+				<!-- 뉴욕 날씨 -->
+				<div
+					style="position: relative; background-color: #4b99da; color: #fff; height: 100px; width: 540px; border-radius: 20px;">
+					<div style="float: left; margin-top: 20px; margin-left: 30px">
+						<div class="new-weather_icon"></div>
+					</div>
+					<br>
+					<div class="flex"
+						style="float: right; margin: -10px 0px 0px 30px; padding-right: 20px; font-size: 11pt">
+						<div style="margin-right: 20px;">
+							<div class="new-temp_min"></div>
+							<div class="new-temp_max"></div>
+							<div class="new-humidity"></div>
+						</div>
+						<div>
+							<div class="new-wind"></div>
+							<div class="new-cloud"></div>
+						</div>
+					</div>
+					<div class="flex"
+						style="float: right; margin-top: -20px; margin-left: 10px">
+						<div class="new-current_temp"
+							style="font-size: 40pt; margin-right: 10px"></div>
+						<div>
+							<div class="new-weather_description"
+								style="font-size: 16pt; margin-top: 10px;"></div>
+							<div class="new-city" style="font-size: 13pt"></div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</section>
+	</div>
+</body>
+</html>

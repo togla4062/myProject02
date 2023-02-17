@@ -1,0 +1,131 @@
+@charset "UTF-8";
+
+.list-1{
+	padding: 1.5em;
+}
+.right {
+	justify-content: flex-end;
+}
+.list-1 section div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+.list-1 section div .list-a{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+
+.list-table{/* 크기 늘렸습니다 1.5 수민 */
+	 border-collapse: collapse;
+     width: 1200px;
+}
+tr.list-2 th, .list-table tr td{
+	 text-align: center;
+	 padding: 10px;
+     border-bottom: 3px solid #a4cdf2;
+}
+tr.list-2 th{
+	background: #a4cdf2;
+	color: white;
+}
+.list-table tr td{
+	color: #6f6f6f;
+}
+
+.list-button{
+	display:inline-block;
+	padding:10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #4b99da;
+}
+.block{
+	display:inline-block;
+	padding:10px;
+	height: 16px;
+}
+#list {
+ counter-reset : numbering;
+}
+#num:after{
+    counter-increment : numbering; 
+    content : counter(numbering);
+}
+
+.pageBTN {
+	text-align: center;
+}
+
+.pageBTN>a {
+	color: #4B99DA;
+}
+
+.top-menu:hover {
+	cursor: pointer;
+}
+
+.search {
+	margin: 5px auto;
+	padding: 0 10px;
+	width: 600px; 
+	border: 2px solid #4B99DA;
+	border-radius: 10px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
+
+.search-input {
+	border: none;
+	width: 300px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
+
+.search-input:focus {
+	outline: none;
+}
+
+.search-input::placeholder {
+	color: #A4CDF2;
+	font-weight: bold;
+	text-align: center;
+}
+
+.searchType {
+	border: none;
+}
+
+.searchType:focus {
+	outline: none;
+}
+
+.searchType {
+	color: #4B99DA;
+	font-weight: bold;
+}
+
+.searchType option {
+	background: #A4CDF2;
+	color: #FFFFFF;
+	padding: 3px 0;
+}
+
+#currentPage {
+	color:#1a3fd5;
+	font-weight: bold;
+}
+
+.today{ /* 경조사일 오늘 기준 지난 일 색깔!  */
+	background-color: #9d9d9d;
+}

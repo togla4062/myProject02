@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
+		<section>
+			
+			<div class="flex center back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>사원명</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>내선번호</th>
+						<th>주업무</th>
+					</tr>
+					<tbody id="emp-list">
+						<tr th:each="list : ${list1}">
+							<td><a th:href="|/ozc/groupDetail/${list.no}|">[[${list.name}]]</a></td>
+							<td th:text="${list.departmentNo.departmentName}">부서</td>
+							<td th:text="${list.position.label}">직급</td>
+							<td th:text="${list.extension}">내선번호</td>
+							<td th:text="${list.mainWork}">주업무</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 페이징정보 시작-->
+			<div class="paging flex center">
+				<ol class="flex">
+					<!-- 첫 페이지로 -->
+					<li>
+						<a href="javascript:pageClicked(1)">&lt;&lt;</a>
+					</li>
+					<!-- Prev Sign -->
+					<li th:if="${pi.pageStart ne 1}"> <!-- ne(!=) -->
+						<a th:href="|javascript:pageClicked(${pi.pageStart - 1})|">&lt;</a>
+					</li>
+				</ol>
+				<ol class="page-list flex">
+					<!-- pageStart ~ pageEnd 반복 -->
+					<li th:each="pageNo:${#numbers.sequence(pi.pageStart,pi.pageEnd)}">
+						<a th:href="|javascript:pageClicked(${pageNo})|">[[${pageNo}]]</a>
+					</li>
+				</ol>
+				<ol class="flex">
+					<!-- Next Sign -->
+					<li th:if="${pi.pageEnd < pi.pageTotal}">
+						<a th:href="|javascript:pageClicked(${pi.pageEnd + 1})|">&gt;</a>
+					</li>
+					<!-- 마지막 페이지로 -->
+					<li>
+						<a th:href="|javascript:pageClicked(${pi.pageTotal})|">&gt;&gt;</a>
+					</li>
+				</ol>
+				<input type="hidden" id="p-length" th:value="${pi.pLength}">
+			</div>
+			<!-- 페이징정보 마지막-->
+			<div class="wrap-1 flex right">
+				<a class="listbutton" href="/ozc/groupList/search">검색하기</a>
+				<a class="listbutton resigned" href="/ozc/groupList/retirement" sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')">퇴직한 사원 조회</a>
+			</div>
+		</section>
+
+</html>

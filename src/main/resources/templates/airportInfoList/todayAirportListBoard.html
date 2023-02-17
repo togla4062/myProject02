@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<table class="textcenter list-table">
+	<tr class="list-2">
+		<th width="70px">시간</th>
+		<th width="70px">변경시간</th>
+		<th width="150px">출발지</th>
+		<th width="150px">도착지</th>
+		<th width="300px">항공사</th>
+		<th width="70px">편명</th>
+		<th width="50px">구분</th>
+		<th width="50px">탑승구</th>
+		<th width="130px">현황</th>
+	</tr>
+	<tr th:each="list : ${page}">
+		<td th:text="${list.std}">시간</td>
+		<td th:text="${list.etd}">변경시간</td>
+		<td th:text="${list.boardingKor}+'('+${list.boardingEng}+')'">출발지</td>
+		<td th:text="${list.arrivedKor}+'('+${list.arrivedEng}+')'">도착지</td>
+		<td th:text="${list.airlineKorean}+'('+${list.airlineEnglish}+')'">항공사</td>
+		<td th:text="${list.airFln}">편명</td>
+		<td th:text="${list.line}+'선'">구분</td>
+		<td th:text="${list.gate}">탑승구</td>
+		<td th:if="${list.rmkKor}==null"> - </td>
+		<td th:if="${list.rmkKor}!=null" th:text="${list.rmkKor}+'('+${list.rmkEng}+')'">현황</td>
+	</tr>
+</table>
+<ul th:if="${totalCount}/10>1" class="flex center pageBTN">
+	<li th:if="${pageNo}-1>0" th:value="${pageNo}-1" onclick="airportListChange(this)">[이전]</li>
+	<li th:if="${pageNo}-2>0" th:value="${pageNo}-2" th:text="'['+(${pageNo}-2)+']'" onclick="airportListChange(this)"></li>
+	<li th:if="${pageNo}-1>0" th:value="${pageNo}-1" th:text="'['+(${pageNo}-1)+']'" onclick="airportListChange(this)"></li>
+	<li id="currentPage" th:text="'['+${pageNo}+']'"></li>
+	<li th:if="${pageNo}+1<${totalCount}/10" th:value="${pageNo}+1"th:text="'['+(${pageNo}+1)+']'" onclick="airportListChange(this)"></li>
+	<li th:if="${pageNo}+2<${totalCount}/10" th:value="${pageNo}+2"th:text="'['+(${pageNo}+2)+']'" onclick="airportListChange(this)"></li>
+	<li th:if="${pageNo}+1<${totalCount}/10" th:value="${pageNo}+1" onclick="airportListChange(this)">[다음]</li>
+</ul>
+</html>

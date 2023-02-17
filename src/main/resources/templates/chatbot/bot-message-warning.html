@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<div class="flex center date"></div>
+<div class="msg bot flex">
+	<div class="icon">
+		<img src="/image/icon/robot.png">
+	</div>
+	<div class="message" th:if="${countrycode != null and !(countrycode.equals('KR')) and !(countrycode.equals('KP'))}">
+		<div class="part" th:if="${country != null}">
+			<p th:utext="'요청하신 '+${country}+'의 위험 경보는 다음과 같습니다.'"></p>
+		</div>
+		<div th:if="${country != null}">
+			<div class="part" th:if="${msg.country_nm != null}">
+				<p>
+					<span>대륙 명</span>&nbsp;:&nbsp; <span
+						th:text="${msg.continent_nm}+'('+${msg.continent_eng_nm}+')'"></span>
+					<br> <span>지역 명</span>&nbsp;:&nbsp; <span
+						th:text="${msg.country_nm}+'('+${msg.country_eng_nm}+')'"></span>
+					<br> <span>경보 레벨</span>&nbsp;:&nbsp; <span
+						th:text="${msg.alarm_lvl}"></span> <br> <span
+						th:text="${msg.region_ty}+' : '"></span> <span
+						th:text="${msg.remark}"></span>
+				</p>
+			</div>
+			<div class="part" th:if="${msg.country_nm == null}">
+				<p>존재하지 않는 정보 입니다.</p>
+			</div>
+		</div>
+		<div class="time" th:text="${time}">메세지 작성 시간</div>
+	</div>
+	<div class="message" th:if="${countrycode == null}">
+		<div class="part">
+			<p th:utext="'정말 아쉽게도 요청하신 정보가 없습니다.'"></p>
+		</div>
+		<div class="time" th:text="${time}">메세지 작성 시간</div>
+	</div>
+	<div class="message" th:if="${countrycode} == 'KR' or ${countrycode} == 'KP'">
+		<div class="part">
+			<p th:utext="${country}+'은 질문하실 수 없습니다.'"></p>
+		</div>
+		<div class="time" th:text="${time}">메세지 작성 시간</div>
+	</div>
+</div>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/sideMenu/mypage.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script src="/js/mypage/mypage.js"></script>
+<title>마이페이지</title>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap mypage-1">
+		<div class="flex center">
+			<p>마이페이지</p>
+		</div>
+			<table class="mypage-table">
+				<tr>
+					<td>사진</td>
+					<td><img th:src="|${mypage.imageNo.url}|"></td>
+				</tr>
+				<tr >
+					<td>사원번호</td>
+					<td th:text="${mypage.no}">사원번호</td>
+				</tr>
+				<tr>
+					<td>부서이름</td>
+					<td th:text="${mypage.departmentNo.departmentName}">부서이름</td>
+				</tr>
+				<tr>
+					<td>이름</td>
+					<td th:text="${mypage.name}">이름</td>
+				</tr>
+				<tr>
+					<td>이메일</td>
+					<td th:text="${mypage.email}">이메일</td>
+				</tr>
+				<tr>
+					<td>직급</td>
+					<td th:text="${mypage.position}">직급</td>
+				</tr>
+				<tr>
+					<td>연락처</td>
+					<td th:text="${mypage.phone}">연락처</td>
+				</tr>
+				<tr>
+					<td>입사일</td>
+					<td th:text="${mypage.joinDate}">입사일</td>
+				</tr>
+				<tr>
+					<td>내선번호</td>
+					<td th:text="${mypage.extension}">내선번호</td>
+				</tr>
+				<tr>
+					<td>급여</td>
+					<td th:text="${mypage.salary}" >급여</td>
+				</tr>
+				<tr>
+					<td>생년월일</td>
+					<td th:text="${mypage.birthDate}">생년월일</td>
+				</tr>
+				<tr>
+					<td>주업무</td>
+					<td th:text="${mypage.mainWork}">주업무</td>
+				</tr>
+		</table>
+	</div>
+</main>
+</html>

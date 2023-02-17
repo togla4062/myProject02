@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/commons/common.css" />
+	<link rel="stylesheet" href="/css/commons/reset.css" />
+	<link rel="stylesheet" href="/css/regist/register.css"/>
+	<th:block th:insert="~{/layout/sideMenu :: head}" />
+	<title>사원등록</title>
+	<script type="text/javascript">
+	
+		//이미지 파일을 선택하면 이미지 데이터가 전송됩니다
+		function gimgChanged(el){ //230109 한아 작성
+			var fileData=$(el)[0].files[0];
+			
+			var formData=new FormData();
+			formData.append('gimg',fileData);
+			
+			$.ajax({
+				url:"/employees/temp-upload",
+				type:"post",
+				contentType:false,
+	    		processData:false,
+	    		data:formData,
+	    		success:function(map){//서버에 업로드 이후 url리턴 -> 파라미터에 전달
+	    			console.log();
+	    			
+	    			$(".img").css("background-image", "url("+map.url+")");
+	    			$(el).siblings(".newName").val(map.newName);
+	    			$(el).siblings(".oldName").val(map.oldName);
+	    			$(el).siblings(".imgkey").val(map.key);
+	    			
+	    		}
+			});
+		}
+	</script>
+</head>
+<main>
+	<!-- 230105 한아 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p>신입 사원 등록</p>
+			</div>
+			<div>
+				<form action="/employees/reg" method="post">
+					<table class="list-table">
+						<tr class="list-2">
+							<th colspan="2">신입사원 작성 </th>
+						</tr>
+						<tr>
+							<td>
+								이름 : <input type= "text" name="name" size= "9" required="required">
+							</td>
+							<td rowspan="4" width="130px">
+								<label for="defimg"><img class="img"></label>
+							</td>
+						</tr>
+								
+						<tr>
+							<td>
+								이메일 : <input type= "email" name="email" size ="15" required="required">
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								부서 :
+								<select name="departmentNo">
+									<option disabled selected>========</option>
+									<option th:each="departments : ${department}" th:value="${departments.departmentNo}" th:utext="${departments.departmentName}"></option>
+								</select>
+								직급 : <select name="position">
+									<option value="Intern">인턴</option>
+									<option value="Staff" selected>사원</option>
+									<option value="SeniorClerk">주임</option>
+									<option value="AssistantManager">대리</option>
+									<option value="Chief">계장</option>
+									<option value="Manager">과장</option>
+									<option value="GeneralManager">실장</option>
+									<option value="DeputyGeneralManager">차장</option>
+									<option value="DepartmentManager">부장</option>
+									<option value="CEO">대표이사</option>
+								</select>
+							</td>
+						</tr>
+						
+						<tr>
+							<td class="flex">
+								이미지 :
+								<input id="defimg" class="gimg" type="file" name="gimg" onchange="gimgChanged(this)">
+								<input type="hidden" class="newName" name="newName">
+								<input type="hidden" class="oldName" name="oldName">
+								<input type="hidden" class="imgkey" name="imgkey">
+							</td>
+						</tr>
+						
+						<tr>
+							<td>
+								비밀번호 : <input type="password" name="password" size="9" required="required">
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								생년월일 : <input type="date" name="birthDate" size="9" placeholder="YYYY/MM/DD" required="required">
+							</td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<td>
+								주업무 : <input type="text" name="mainWork" size="15" required="required">
+							</td>
+							<td></td>
+						</tr>
+	
+						<tr>
+							<td>
+								연락처 : <input type= "text" name=phone size= "20" maxlength="11" placeholder="공백없이 숫자만 입력하세요" required="required">     
+						    </td>
+						    <td></td>
+						</tr>
+						
+						<tr>
+							<td> 
+								내선번호 : <input type= "text" name=extension size= "9" maxlength="11" required="required">
+							</td>
+							<td></td>
+						</tr>
+						
+						<tr>
+							<td>
+								입사일 : <input type="date" name="joinDate" size="9" required="required">
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>
+								급여 : <input type= "text" name="salary" size= "20" placeholder="공백없이 숫자만 입력하세요" required="required">
+							</td>
+							<td></td>
+						</tr>
+						
+						<tr class="btn">
+							<th colspan="2"><input type="submit" value="등록">
+											<input type="reset" value="취소"></th>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

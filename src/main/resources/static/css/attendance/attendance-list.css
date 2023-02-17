@@ -1,0 +1,58 @@
+@charset "UTF-8";
+/* 230104 한아 작성 */
+.list-1{
+	padding: 1.5em;
+}
+.list-1 section div{
+	padding: 5px;
+}
+.list-1 section div:first-child{
+	padding-bottom: 50px;
+}
+.list-1 section div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+.list-table{
+	 border-collapse: collapse;
+     width: 1000px;
+}
+tr.list-2 th, .list-table tr td{
+	 text-align: center;
+	 padding: 10px;
+     border-bottom: 3px solid #a4cdf2;
+}
+tr.list-2 th{
+	background: #a4cdf2;
+	color: white;
+}
+.list-table tr td{
+	color: #6f6f6f;
+}
+
+.group-form{
+	padding-top: 10px;
+	padding-bottom: 15px;
+}
+.group-form select{
+	height: 25px;
+	border: 3px solid #a4cdf2;
+	font-weight: 600;
+	color: #606060;
+}
+.group-form select option{
+	color: #606060;
+	font-weight: 600;
+}
+.group-form>button{
+	font-size: 13px;
+	color: #fff;
+	border: solid 1px #a4cdf2;
+	border-radius: 5px;
+	padding: 0px 5px;
+	background-color: #a4cdf2;
+}

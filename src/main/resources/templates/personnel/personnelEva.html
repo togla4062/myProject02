@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/personnelEva/personnelEva.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script src="/js/personnerlEva/personnerlEvaMain.js"></script>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+
+	$(function(){
+		
+		var url = window.location.href
+		var arr = [];
+			
+		arr = url.split('/')
+		const empNo = arr[4]
+		
+		////////////////////////////////////////////////
+		
+		var score =0;
+		var score1 =0;
+		var score2 =0;
+		var score3 =0;
+		var score4 =0;
+		var total=0;
+		                                                                                            
+		
+		$("#checkScore").on('change',function(){
+			/* alert(this.value)  첫번째 평가 선택시 alert뜨길래!! 주석처리함 1/18 수민*/ 
+			score =this.value
+			total = parseInt(score)+parseInt(score1)+parseInt(score2)+parseInt(score3)+parseInt(score4);		
+			console.log("dd",parseInt(total))
+			$("#totalScore").val(total)
+		})
+		
+		$("#checkScore1").on('change',function(){
+			score1 = this.value;
+			total = parseInt(score)+parseInt(score1)+parseInt(score2)+parseInt(score3)+parseInt(score4);		
+			console.log("dd1",parseInt(total))
+			$("#totalScore").val(total)
+		})
+		
+		$("#checkScore2").on('change',function(){
+			score2 = this.value;
+			total = parseInt(score)+parseInt(score1)+parseInt(score2)+parseInt(score3)+parseInt(score4);		
+			console.log("dd2",parseInt(total))
+			$("#totalScore").val(total)
+		})
+		$("#checkScore3").on('change',function(){
+			score3 = this.value;
+			total = parseInt(score)+parseInt(score1)+parseInt(score2)+parseInt(score3)+parseInt(score4);		
+			console.log("dd3",parseInt(total))
+			$("#totalScore").val(total)
+		})
+		
+		$("#checkScore4").on('change',function(){
+			score4 = this.value;
+			total = parseInt(score)+parseInt(score1)+parseInt(score2)+parseInt(score3)+parseInt(score4);	
+			console.log("dd4",parseInt(total))
+			$("#totalScore").val(total)
+		
+		})
+		
+		
+	
+	
+	//	console.log(score, score1, score2, score3, score4);
+		//점수를 등급으로! 
+		$("#checkResult").on('click',function(){
+			
+			var empGrade = "X";  
+			
+			const totalScore = $("#totalScore").val();
+			
+			if(totalScore >= 25){
+				empGrade = "A";
+			}else if(totalScore >= 20){
+				empGrade = "B";
+			}else if(totalScore >= 16){
+				empGrade = "C"
+			}else if(totalScore >= 12){
+				empGrade = "D"
+			}else if(totalScore >= 7 ){
+				empGrade = "E"
+			}
+			
+			console.log("empGrade : ",empGrade)
+			var dto = {
+					"no":empNo,
+					"empNo":empNo,
+					"prepareScore":score,
+					"performAbility":score1,
+					"anotherAdility":score2,
+					"freeTime":score3,
+					"foodAmount":score4,
+					"totalScore":totalScore,
+					"empGrade":empGrade
+					
+				}
+			
+				console.log(dto)
+				if(score != 0 && score1 != 0 && score2  != 0 && score3 != 0 && score4 != 0){
+					//평가 완료 누를 때 
+					$.ajax({				
+						method:"POST",
+						url:"/personnelEva/save",			
+						contentType:"application/json",
+						dataType:"json",
+						data:JSON.stringify(dto),
+						success:function(result){									
+							console.log(result)
+							if(result.msg =='SUCCESS'){
+								alert("등록 성공");
+								location.href="/personnelEvaList"						
+							}else{
+								alert("등록실패");
+							}
+						},
+						error:function(){
+							console.log("통신실패");
+						}
+						
+					});//ajax close
+				
+				}else{
+					alert("평가를 모두 완료해주세요!!")
+				}
+			
+				
+		})
+		
+	});
+	
+/*
+ * 
+function assessment() {
+	var mark1 = (new Function ('return '+ document.score.select1.value))();
+	var mark2 = eval(document.score.select2.value);
+	var mark3 = eval(document.score.select3.value);
+	var mark4 = eval(document.score.select4.value);
+	var mark5 = eval(document.score.select5.value);
+	document.score.rescore.value = mark1 + mark2 + mark3 + mark4 + mark5;
+	var totalScore = $("#totalScore").val();
+	
+	
+	s
+} */
+// -->
+</script>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap Eva-1">
+		<div class="flex center">
+			<p class="Eva-logo">인사평가</p>
+		</div>
+		<div class="flex center Eva-2">
+			<span class="Eva-span1">평가대상자</span>
+			<div class="flwx center">
+				<table border="1" class="Eva-table2">
+					<tr>
+						<td>사원번호</td>
+						<td>[[${list.no}]]</td>
+					</tr>
+					<tr>
+						<td>부서</td>
+						<td>[[${list.departmentName}]]</td>
+					</tr>
+					<tr>
+						<td>이름</td>
+						<td>[[${list.name}]]</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="flex right">
+			<a class="back-1" href="/personnelEvaList">뒤로가기</a>
+		</div>
+		<div class="wrap flex center Eva-3">
+			<div name=score>
+				<table class="Eva-table">
+					<tr>
+						<th>업무 수행능력</th>
+						<th><select id="checkScore" class="Eva-select" size="1" name="select1">
+							    <option value="0">선택하세요</option>
+							    <option value="1">매우 낮음</option>
+							    <option value="2">낮음</option>
+							    <option value="3">보통</option>
+							    <option value="4">높음</option>
+							    <option value="5">매우 높음</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th>고객 응대 능력</th>
+						<th><select id="checkScore1" class="Eva-select" size="1" name="select2" >
+							    <option value="0">선택하세요</option>
+							    <option value="1">매우 낮음</option>
+							    <option value="2">낮음</option>
+							    <option value="3">보통</option>
+							    <option value="4">높음</option>
+							    <option value="5">매우 높음</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th>사고 및 재난 발생시 대처능력</th>
+						<th><select id="checkScore2" class="Eva-select" size="1" name="select3">
+							    <option value="0">선택하세요</option>
+							    <option value="1">매우 낮음</option>
+							    <option value="2">낮음</option>
+							    <option value="3">보통</option>
+							    <option value="4">높음</option>
+							    <option value="5">매우 높음</option>
+							</select>
+						</th>
+					</tr>
+					<tr>
+						<th>업무자세 및 인간관계</th>
+						<th><select id="checkScore3" class="Eva-select" size="1" name="select4">
+							    <option value="0">선택하세요</option>
+							    <option value="1">매우 낮음</option>
+							    <option value="2">낮음</option>
+							    <option value="3">보통</option>
+							    <option value="4">높음</option>
+							    <option value="5">매우 높음</option>
+							</select>
+						</th>
+					</tr>
+						<tr>
+						<th>업무 준비도</th>
+						<th><select id="checkScore4" class="Eva-select" size="1" name="select5">
+							    <option value="0">선택하세요</option>
+							    <option value="1">매우 낮음</option>
+							    <option value="2">낮음</option>
+							    <option value="3">보통</option>
+							    <option value="4">높음</option>
+							    <option value="5">매우 높음</option>
+							</select>
+						</th>
+					</tr>
+					</table>
+			<div class="wrap flex center Eva-all">
+				총점&nbsp;<input id="totalScore" type="text" name="rescore" size=2 disabled value="">&nbsp;점
+			</div>	
+			<div class="wrap flex center Eva-button">
+				<div class="Eva-button2">
+					<input type="button" id="checkResult" value="평가하기">
+				</div>
+			</div>
+		</div>
+		</div>
+	</div>
+</main>
+</html>

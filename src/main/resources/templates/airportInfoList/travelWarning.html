@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>국가별 위험 경보 정보 조회</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/travelWarning/travelWarning.css">
+<script src="/js/API/travelWarning.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="thispage">
+		<div>
+			<p class="flex center top-menu">국가별 위험 경보 정보 조회</p>
+			<div class="search">
+				<select id="selectContry" class="search-contry">
+					<option value="US">미국</option>
+					<option value="CA">캐나다</option>
+					<option value="MX">멕시코</option>
+					<option value="CN">중국</option>
+					<option value="JP">일본</option>
+					<option value="RU">러시아</option>
+					<option value="TH">태국</option>
+					<option value="VN">베트남</option>
+					<option value="EG">이집트</option>
+					<option value="CF">중앙아프카공화국</option>
+					<option value="ZA">남아프카공화국</option>
+					<option value="IN">인도</option>
+					<option value="ID">인도네시아</option>
+					<option value="QA">카타르</option>
+					<option value="IR">이란</option>
+					<option value="IQ">이라크</option>
+					<option value="SA">사우디아라비아</option>
+					<option value="GB">영국</option>
+					<option value="FR">프랑스</option>
+					<option value="IT">이탈리아</option>
+					<option value="VA">바티칸</option>
+					<option value="CH">스위스</option>
+					<option value="AU">호주</option>
+				</select>
+				<button type="button" onclick="select_contry()">조회</button>
+			</div>
+		</div>
+		<ul class="search-result">
+			<li><span>대륙명 : </span><span class="continent"> <!-- 대륙명 -->
+			</span></li>
+			<li><span>지역 : </span><span class="contry"> <!-- 국가명 -->
+			</span><br> <span class="flag"> <!-- 국기 -->
+			</span></li>
+			<li><span>경보단계 : </span><span class="level"> <!-- 경보단계 -->
+			</span></li>
+			<li><span>경보지역 유형 : </span><span class="region"> <!-- 유형 -->
+			</span></li>
+			<li><span>비고 : </span><span class="remark"> <!-- 비고 -->
+			</span></li>
+			<li><span>기준날짜 : </span><span class="writtenDate"> <!-- 날짜 -->
+			</span></li>
+			<li class="textcenter">지도</li>
+			<li class="map"></li>
+			<li></li>
+		</ul>
+	</div>
+</main>
+</html>

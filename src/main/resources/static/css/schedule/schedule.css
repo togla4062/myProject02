@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+ol, ul {
+    padding-left: 0;
+}
+.menuForm {
+	margin-left: 0;
+}
+header>.wrap>ul>li:nth-child(2) {
+	left: -8px;
+}
+
+.logoImg {
+	background-position: left;
+}
+
+header>.wrap>ul>li:nth-child(3) {
+	margin-left: -18px;
+}
+
+header>.wrap>ul>li:nth-child(4) {
+	margin-left: -18px;
+}
+
+header>.wrap>ul>li:nth-child(5) {
+	margin-left: -18px;
+}
+
+header>.wrap ul>li dl>dt {
+	margin-left: 0;
+}
+
+header>.wrap ul>li dl>dd {
+	margin-left: 10px;
+}
+
+#headerBtn {
+	margin: 20px 10px;
+}
+
+#data-start {
+	margin-top: 140px;
+}
+
+#changeDate {
+	border: 1px solid #3B71CA;
+	border-radius :20px;
+	padding: 0 10px;
+}
+
+#changeDate:hover {
+	cursor: pointer;
+}
+#list {
+ counter-reset : numbering;
+}
+#num:after{
+    counter-increment : numbering; 
+    content : counter(numbering);
+}
+#calendarOnlyUse {
+	width: 240px;
+}
+#sidemenulist {
+    margin-left: -20px;
+}
+
+.list-1{
+	padding: 1.5em;
+}
+.right {
+	justify-content: flex-end;
+}
+.list-1 section div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+
+.list-table{/* 크기 늘렸습니다 1.5 수민 */
+	 border-collapse: collapse;
+     width: 1200px;
+}
+tr.list-2 th, .list-table tr td{
+	 text-align: center;
+	 padding: 10px;
+     border-bottom: 3px solid #a4cdf2;
+}
+tr.list-2 th{
+	background: #a4cdf2;
+	color: white;
+}
+.list-table tr td{
+	color: #6f6f6f;
+}
+
+.list-button{
+	display:inline-block;
+	padding:10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #4b99da;
+}
+.block{
+	display:inline-block;
+	padding:10px;
+	height: 16px;
+}

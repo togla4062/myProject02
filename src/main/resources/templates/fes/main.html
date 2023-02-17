@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="/css/commons/common.css" /><!--  -->
+	<link rel="stylesheet" href="/css/commons/reset.css" /><!--  -->
+	<link rel="stylesheet" href="/css/fes/main.css">
+	<th:block th:insert="~{/layout/sideMenu :: head}" /><!--  -->
+	<style>
+	</style>
+<script>	
+
+	//readyfunction
+	$(function(){
+		getFirstData()
+	});
+	
+	var pageNo=1;//가장처음 리스트 불러올때 1번 페이지부터 불러오기 위함
+	
+	// 처음 페이지 데이터 불러오기
+	function getFirstData(){
+		$.ajax({
+			url:`/fes/${pageNo}`,
+			success:function(getFirstData){
+				$("#display-list-fastival").html(getFirstData);
+			}
+		});
+	}
+	
+	//처음 페이지에 대한 pageNo변경
+	function firstPageClicked(fesPage){
+		pageNo=fesPage;
+		getFirstFesPage();
+	}
+	function getFirstFesPage(){
+		$.ajax({
+			url:`/fes/${pageNo}`,
+			success:function(getFirstFesPage){
+				$("#display-list-fastival").html(getFirstFesPage);
+			}
+		});
+	}
+	
+	//검색결과에 대한 pageNo변경
+	function searchPageClicked(fesPage){
+		pageNo=fesPage;
+		getSearchFesPage();
+	}
+	function getSearchFesPage(){
+		$.ajax({
+			url:`/search/${pageNo}`,
+			success:function(getSearchFesPage){
+				$("#display-list-fastival").html(getSearchFesPage);
+			}
+		});
+	}
+	
+	//검색 처리 function
+	function fesSearch(event) {
+		event.preventDefault();
+		var pageNo=1;//검색하기전 페이지 번호는 항상 1로 초기화
+		alert($("#festivalname").val().trim()+"검색하시겠습니까?");
+		$.ajax({
+			url:`/search/${pageNo}`,
+			data: {
+				"festivalname" : $("#festivalname").val().trim()
+				},
+			success:function(result){
+				
+				$("#display-list-fastival").html(result);
+			}
+		});
+	}
+
+</script>
+</head>
+<main><!--  -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" /><!--  -->
+		<div class="wrap list-1">
+		<section>
+			<div class="flex center title">
+				<p><a href="/fes">광주광역시_축제</a></p>
+			</div>
+	
+			<div class="center back-list" id="display-list-fastival">
+		
+			</div>
+	
+			<form onsubmit="fesSearch(event)">
+				<label>축제명 입력</label>
+				<input type="text" id="festivalname">
+				<button>검색</button>
+			</form>
+		</section>
+		</div>
+</main><!--  -->
+</html>

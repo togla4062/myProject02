@@ -1,0 +1,108 @@
+@charset "UTF-8";
+/* 230104 한아 작성 */
+#edit-mode{display: none;}
+#edit-mode>table{width: 900px;}
+.attendance-list{
+	position: absolute;
+	top: 20px;
+	color: #666;
+}
+.attendance-list>span{
+	width: 10px;
+    height: 10px;
+    background-image: url(/image/icon/back.png);
+    background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+.list-1{
+	padding: 1.5em;
+}
+.list-1 section div.title, .back-list{
+	padding: 5px;
+}
+.att-btn{
+	display: inline-block;
+	padding: 10px;
+}
+.list-1 section div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+.list-table{
+	 border-collapse: collapse;
+     width: 800px;
+}
+tr.list-2 th, .list-table tr td{
+	 text-align: center;
+	 padding: 10px;
+     border-bottom: 3px solid #a4cdf2;
+}
+tr.list-2 th{
+	background: #a4cdf2;
+	color: white;
+}
+.list-table tr td{
+	color: #6f6f6f;
+}
+.list-table>tbody>tr>td>button{
+	border: solid 1px;
+	border-radius: 5px;
+	padding: 1px 4px;
+	color: #6f6f6f;
+}
+.list-table>tbody>tr>td>button:hover{
+	color: #fff;
+	background-color: #4b99da;
+	border: solid 1px #4b99da;
+}
+.list-table>tbody>tr>td>button:nth-child(1){
+	margin-right: 3px;
+}
+.list-table>tbody>tr>td>button:nth-child(2){
+	margin-left: 3px;
+}
+.list-table>tbody>tr>td>input{
+	width: 100%;
+}
+.bar{
+	width: 1px;
+    height: 13px;
+    margin: 0px 12px;
+    background-color: rgb(217, 217, 217);
+}
+.small-circle {
+    width: 10px;
+    height: 10px;
+    background-image: url(/image/icon/circle-gray.png);
+    background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+.small-circle-selected {
+    width: 10px;
+    height: 10px;
+    background-image: url(/image/icon/circle-point.png);
+    background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+
+
+.att-btn button{
+	font-size: 17px;
+	color: #222;
+}

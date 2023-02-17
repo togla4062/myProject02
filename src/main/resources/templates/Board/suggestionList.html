@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/board/board-list.css">
+<link rel="stylesheet" href="/css/board/suggestion-list.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p class="top-menu" onclick="location.href='/Board/suggestionList'">건의게시판</p>
+			</div>
+			<div class="flex right">
+				<a class="list-button" href="/Board/suggestionWrite">[글쓰기]</a>
+			</div>
+			<div class="flex center back-list">
+				<table id="list" class="list-table">
+					<tr class="list-2">
+						<th width="100px">번호</th>
+						<th width="250px">제목</th>
+						<th>작성자</th>
+						<th width="200px">날짜</th>
+					</tr>
+					<tr th:if="${suggestionList.isEmpty()}">
+						<td colspan="5">해당 게시판에 등록된 글이 없습니다.</td>
+					</tr>
+					<tr th:if="${suggestionList.isEmpty()}==false" th:each="list : ${suggestionList}">
+						<td id="num"><!-- 게시글 번호 --></td>
+						<td><a th:href="@{/suggestDetail(suggestNo=${list.suggestNo})}">[[${list.title}]]</a></td>
+						<td th:text="${list.registNo.name}">관리자</td>
+						<td th:text="${#temporals.format(list.createDate,'yyyy/MM/dd HH:mm')}">2023.01.02</td>
+					</tr>
+				</table>
+			</div>
+		</section>
+		<div class="search center">
+			<form action="" method="get" class="flex around">
+				<select class="searchType" name="searchType">
+					<option value="title">제목으로 검색</option>
+					<option value="content">내용으로 검색</option>
+					<option value="name">작성자로 검색</option>
+				</select>
+				<input class="search-input" type="text" name="search" placeholder="검색할 내용을 입력해 주세요" required="required">
+				<button class="list-button">[검색하기]</button>
+			</form>
+		</div>
+		<div class="pageBTN" th:if="${suggestionList.getTotalPages}>0">
+	    	<a th:if="${suggestionList.hasPrevious()}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()}&search=${search}&searchType=${searchType}|">[이전]</a>
+	    	<a th:if="${suggestionList.getNumber()-1}>0" th:text="${suggestionList.getNumber()-1}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()-1}&search=${search}&searchType=${searchType}|">현재페이지-2</a>
+	    	<a th:if="${suggestionList.getNumber()}>0" th:text="${suggestionList.getNumber()}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()}&search=${search}&searchType=${searchType}|">현재페이지-1</a>
+	    	<a id="currentPage" th:text="${suggestionList.getNumber()+1}">현재페이지</a>
+	    	<a th:if="${suggestionList.getNumber()+2<=suggestionList.getTotalPages()}" th:text="${suggestionList.getNumber()+2}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()+2}&search=${search}&searchType=${searchType}|">현재페이지+1</a>
+	    	<a th:if="${suggestionList.getNumber()+3<=suggestionList.getTotalPages()}" th:text="${suggestionList.getNumber()+3}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()+3}&search=${search}&searchType=${searchType}|">현재페이지+2</a>
+	    	<a th:if="${suggestionList.hasNext()}" th:href="|/Board/suggestionList?pageNum=${suggestionList.getNumber()+2}&search=${search}&searchType=${searchType}|">[다음]</a>
+    	</div> 
+	</div>
+</main>
+</html>

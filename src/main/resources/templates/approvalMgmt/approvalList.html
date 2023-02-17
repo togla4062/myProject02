@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+th:replace="layout/layout :: layout(~{this::head}, ~{this::main})">
+<head>
+	<meta charset="UTF-8">
+	<title>근태리스트</title>
+	<link rel="stylesheet" href="/css/approvalMgmt/appList.css">
+</head>
+<main>
+	<!-- 230104 한아 작성 230113 재근 리스트 뿌려주기 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center title">
+				<p>[[${#authentication.principal.departmentNo.departmentName}]] 결재 리스트</p>
+			</div>
+			<div class="flex center back-list">
+				<form>
+					<table class="list-table">
+						<thead>
+							<tr class="list-2">
+								<th></th>
+								<th>사원명</th>
+								<th>기안일</th>
+								<th>휴가종류</th>
+								<th>휴가시작일</th>
+								<th>휴가종료일</th>
+								<th>휴가일수</th>
+								<th>상태</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${nullcheck == true}">
+								<td colspan="5">해당 결재리스트에 등록된 결재가 없습니다.</td>
+							</tr>
+							<tr th:if="${nullcheck == false}" th:each="list : ${appList}">
+								<td th:text="${listStat.count}"></td>
+								<td><a th:href="@{/dayoffApp(dayOffNo=${list.dayOffNo})}">[[${list.employeeNo.name}]]</a></td>
+								<td th:text="${list.draftDate}"></td>
+								<td th:text="${list.type}">연차</td>
+								<td th:text="${list.startDate}">2023-01-09</td>
+								<td th:text="${list.endDate}">2023-01-11</td>
+								<td th:text="${list.useDays}">3</td>
+								<td class="app" th:text="${list.approval.label}"></td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>
+		</section>
+		<!-- <div class="search center">
+			<form action="" method="get" class="flex around">
+				<select class="searchType" name="searchType">
+					<option value="name">사원명으로 검색</option>
+					<option value="approval">결재상태로 검색</option>
+				</select>
+				<input class="search-input" type="text" name="search" placeholder="검색할 내용을 입력해 주세요" required="required">
+				<button class="list-button">[검색하기]</button>
+				<div><a class="list-button" href="/approvalList">[전체보기]</a></div>
+			</form>
+		</div> -->
+		
+		<div class="pageBTN" th:if="${appList.getTotalPages}>0">
+	    	<a th:if="${appList.hasPrevious()}" th:href="|/approvalList?pageNum=${appList.getNumber()}|">[이전]</a>
+	    	<a th:if="${appList.getNumber()-1}>0" th:text="${appList.getNumber()-1}" th:href="|/approvalList?pageNum=${appList.getNumber()-1}|">현재페이지-2</a>
+	    	<a th:if="${appList.getNumber()}>0" th:text="${appList.getNumber()}" th:href="|/approvalList?pageNum=${appList.getNumber()}|">현재페이지-1</a>
+	    	<a id="currentPage" th:text="${appList.getNumber()+1}">현재페이지</a>
+	    	<a th:if="${appList.getNumber()+2<=appList.getTotalPages()}" th:text="${appList.getNumber()+2}" th:href="|/approvalList?pageNum=${appList.getNumber()+2}|">현재페이지+1</a>
+	    	<a th:if="${appList.getNumber()+3<=appList.getTotalPages()}" th:text="${appList.getNumber()+3}" th:href="|/approvalList?pageNum=${appList.getNumber()+3}|">현재페이지+2</a>
+	    	<a th:if="${appList.hasNext()}" th:href="|/approvalList?pageNum=${appList.getNumber()+2}|">[다음]</a>
+    	</div>
+	</div>
+</main>
+</html>

@@ -1,0 +1,158 @@
+@charset "UTF-8";
+
+.list-1{
+	padding: 1.5em;
+}
+#listbydepartment{
+	padding-left: 175px;
+}
+.right {
+	justify-content: flex-end;
+}
+.wrap-1{
+	width: 1000px;
+}
+.retired{
+	color: #888;
+}
+.list-table{
+	 border-collapse: collapse;
+     width: 800px;
+}
+.list-2>th{
+	width: 150px ;
+	background: #a4cdf2;
+	color: white;
+	text-align: center;
+	padding: 10px;
+    border-bottom: 3px solid #a4cdf2;
+}
+.list-2>th:last-child{
+	width: 200px ;
+}
+.list-table tr td{
+	text-align: center;
+	padding: 10px;
+	border-bottom: 3px solid #a4cdf2;
+	color: #6f6f6f;
+}
+
+.list-button{
+	display:flex;
+	padding:4px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #4b99da;
+	width: 100px;
+}
+.group-form{
+	padding-top: 10px;
+	padding-bottom: 15px;
+}
+.group-form select{
+	height: 25px;
+	border: 3px solid #a4cdf2;
+	font-weight: 600;
+	color: #606060;
+}
+.group-form select option{
+	color: #606060;
+	font-weight: 600;
+}
+.group-form>button{
+	font-size: 13px;
+	color: #fff;
+	border: solid 1px #a4cdf2;
+	border-radius: 5px;
+	padding: 0px 5px;
+	background-color: #a4cdf2;
+}
+.back-list{
+	margin-top: 40px;
+}
+/***************** 페이징 css *****************/
+.paging{
+	margin-top: 40px;
+}
+.paging ol>li a{
+	display: inline-block;
+	padding: 0.5em 1em;
+	border: 1px solid #fff;
+	margin: 0 2px;
+}
+.select a{
+	color: #fff !important;
+	background-color: #a4cdf2; 
+}
+.pageBTN {
+	text-align: center;
+}
+
+.pageBTN>a {
+	color: #a4cdf2;
+}
+#currentPage {
+	color: #4B99DA;
+	font-weight: bold;
+}
+/***************** 검색 css *****************/
+.search {
+	margin: 20px auto 10px auto;
+	padding: 4px 10px;
+	width: 600px;
+	border: 2px solid #4B99DA;
+	border-radius: 10px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
+
+.search-input {
+	border: none;
+	width: 300px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
+
+.search-input:focus {
+	outline: none;
+}
+
+.search-input::placeholder {
+	color: #A4CDF2;
+	font-weight: bold;
+	text-align: center;
+}
+
+.searchType {
+	border: none;
+}
+
+.searchType:focus {
+	outline: none;
+}
+
+.searchType {
+	color: #4B99DA;
+	font-weight: bold;
+}
+
+.searchType option {
+	background: #A4CDF2;
+	color: #FFFFFF;
+	padding: 3px 0;
+}
+.listbutton{
+	border: 2px solid #4B99DA;
+	border-radius: 10px;
+	color: #4B99DA;
+	text-align: center;
+	padding: 2px 5px;
+	margin: 0 3px;
+}
+.resigned{
+	color: #999;
+	border: 2px solid #999;
+}

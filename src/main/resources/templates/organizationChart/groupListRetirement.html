@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/organizationChart/groupListRetirement.css">
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script src="/js/organization/organizationList.js"></script>
+</head>
+<main>
+	<!-- 230110 한아 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<a href="/ozc/familytree">퇴직한 사원 조회</a>
+			</div>
+			<div class="flex right">
+			    <a class="retired-list" href="/ozc/familytree">돌아가기</a>
+		    </div>
+			<div class="flex center back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>사원명</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>내선번호</th>
+						<th>주업무</th>
+					</tr>
+					<tbody id="emp-list">
+						<tr th:each="list : ${list1}">
+							<td><a th:href="|/ozc/groupDetail/${list.no}|">[[${list.name}]]</a></td>
+							<!-- <td th:onclick="|location.href='/ozc/groupDetail/${list.no}'|" th:text="${list.name}">사원명</td> -->
+							<td th:text="${list.departmentNo.departmentName}">부서</td>
+							<td th:text="${list.position.label}">직급</td>
+							<td th:text="${list.extension}">내선번호</td>
+							<td th:text="${list.mainWork}">주업무</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+	</div>
+</main>
+</html>

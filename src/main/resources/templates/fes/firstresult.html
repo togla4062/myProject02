@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<div class="center ">
+	<table class="list-table">
+		<tr class="list-2">
+			<th>이름</th>
+			<th>홈페이지</th>
+		</tr>
+		<tr th:each="dto:${list}">
+			<td th:text="${dto.festivalNm}"></td>
+			<td>
+			<a th:href="@{|http://${dto.homePage}|}" th:text="${dto.homePage}" target="_blank"></a>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="paging">
+	<a class="fesPage"
+		th:href="|javascript:firstPageClicked(${page.getPageNo()-1})|">&lt;&lt;</a>
+	<a class="fesPage" th:text="${page.getPageNo()}"></a> <a
+		class="fesPage"
+		th:href="|javascript:firstPageClicked(${page.getPageNo()+1})|">&gt;&gt;</a>
+</div>
+</html>

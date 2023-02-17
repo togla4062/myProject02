@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/organizationChart/familyTree.css">
+<link rel="stylesheet" href="/css/organizationChart/groupList.css">
+<link rel="stylesheet" href="/css/organizationChart/groupList2.css">
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+	var page = 1;
+	
+	$(function(){
+		departmentAll();
+		$(".department-name>div").eq(0).addClass("targett")
+		$(".department-name>div").click(departmentClicked);
+	});
+	
+	function departmentAll(){
+		$.ajax({
+			url:`/ozc/groupList/all/${page}`,
+			success: function(resultHTML){
+				$("#employees-list").html(resultHTML);
+				var len = $("#p-length").val();
+				$(".page-list li").eq((page-1)% len ).addClass("select");
+			}
+		})
+	}
+	
+	function pageClicked(pageNo){
+		page=pageNo;
+		departmentAll();
+	}
+	
+	function departmentClicked(){
+		$(".department-name>div").removeClass("targett");
+		$(this).addClass("targett");
+	}
+	
+	function departmentList(departmentNo){
+		$.ajax({
+			url:`/ozc/groupList/${departmentNo}`,
+			success: function(resultHTML){
+				$("#employees-list").html(resultHTML);
+			}
+		})
+	}
+	
+	
+	
+</script>
+</head>
+<main>
+	<!-- 230110 한아 작성 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<section>
+		<h2 class="title flex center">Good Trip 조직도</h2>
+		<div class="image-tree">
+			<div class="ceo-info">
+				<div class="position flex center">
+					<p>CEO</p>
+				</div>
+				<div class="ceo-detail" >
+					<img alt="" th:src="|${ceoImg}|" class="ceo-img" th:onclick="|location.href='/ozc/groupDetail/${ceo.no}'|">
+					<div>
+						<p class="dname" >[[${ceo.departmentNo.DepartmentName}]]</p>
+						<p>[[${ceo.name}]]</p>
+					</div>
+				</div>				
+			</div>
+			<div class="departmenthead-info">
+				<div class="position flex center">
+					<p>부서</p>
+				</div>
+				<div>
+					<div class="department-name flex" >
+						<div onclick="departmentAll()" class="all-list"><a>전체</a></div>
+						<div th:each="department : ${department}" th:onclick="|departmentList(${department.departmentNo});|">
+							<a class="department" >[[${department.departmentName}]]</a>
+						</div>
+					</div>
+					<div class="flex head-left">
+						<div th:each="img : ${images}" class="department-head" >
+							<img alt="" th:src="|${img}|" class="ceo-img">
+						</div>
+					</div>
+					<div class="flex head-left">
+						<div th:each="department : ${department}" class="department-head">
+							<p th:value="${department.departmentName}" class="dname">[[${department.departmentName}]]장</p>
+							<p th:value="${department.departmentHead}">[[${department.departmentHead}]]</p>
+						</div>
+					</div>
+				</div>
+				<div class="head-no flex head-left">
+					<div th:each="no : ${no}" th:onclick="|location.href='/ozc/groupDetail/${no}'|">
+						<div th:value=${no}></div>
+					</div>
+				</div>				
+			</div>
+		</div>
+		
+		<div id="employees-list" class="wrap list-1">
+			<!-- 부서원 리스트가 들어갈 자리입니다. -->
+		</div>
+		
+		
+	</section>
+</main>
+</html>

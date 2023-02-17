@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/board/board-write.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="/js/board/CNCEdit.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+   		<div class="wrap writer-1">
+   			<div class="flex center">
+   				<p>경조사</p>
+   			</div>
+	   		<div class="writer-back">
+	   		<form action="/Board/cncWrite" id="CNC_form" method="post">
+	    			<table class="writer-2">
+	    				<tr>
+	    					<td class="writer-title">
+	    						<input type="text" id="CNCtitle" name="title" placeholder="제목입력" required="required">
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td class="writer-date">
+	    						<a>경조사일</a>
+	    						<input type="date" id="Date" name="eventDate" min="yyy" max="zzz" required="required">
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td class="writer-content">
+	    						<textarea cols="50" rows="20" id="CNCcontent"  name="content" placeholder="내용을 입력하세요" required="required"></textarea>
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td class="flex center">
+	    						<input type="hidden" name="no" th:value="${#authentication.principal.no}">
+								<button class="writer-button" onclick="test()">등록</button>
+	    					</td>
+	    				</tr>
+	    			</table>
+	    		</form>
+	   		</div>
+	   		<div class="back-1">
+				<a class="flex center" href="/Board/cncList">뒤로가기</a>
+			</div>
+   		</div>
+    </main>
+</body>
+</html>

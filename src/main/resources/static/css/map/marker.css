@@ -1,0 +1,42 @@
+@charset "UTF-8";
+.addmarker-wrap{
+	margin-top:50px;
+	margin-left:50px;
+	background-color: #97c6f0;
+	padding: 50px 65px 50px 65px;
+	border-radius: 20px;
+	position: relative;
+}
+.pick{
+	width: 200px;
+	background: #008aff;
+	color: #fff;
+	height: 50px;
+	text-align: center;
+	line-height: 50px;
+	border-radius: 10px;
+	position: absolute;
+	top:-25px;
+	left: 50%;
+	margin-left: -100px;
+	font-size: 20px;
+}
+.addmarker-wrap input{
+	width:300px;
+	height: 40px;
+	border: 3px solid white; 
+	border-radius: 10px;
+	margin-bottom: 10px;
+	outline: none;
+	box-sizing: border-box;
+}
+.addmarker-wrap button {
+	display:inline-block;
+	width:300px;
+	height:40px;
+	padding: 5px;
+	border-radius: 10px;
+	background: #4b99da;
+	color: #fff;
+	box-sizing: border-box;
+}

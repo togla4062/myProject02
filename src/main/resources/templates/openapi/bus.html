@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script
+   src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/index.css" />
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<link rel="stylesheet" href="/css/sideMenu/sideMenu.css">
+<link rel="stylesheet" href="/css/commons/chat-bot.css">
+<script src="/js/sideMenu/sideMenu.js"></script>
+<script src="/js/index/chat.js"></script>
+<script type="text/javascript">
+	/* 
+	$(function(){
+		$("#search").submit(function(){
+			event.preventDefault();//form action 무효화, a href 무효화
+		});
+	});
+	*/
+	
+		
+	function busSearchOnsubmitAtForm(event) {
+	
+		var strSrch = $("#strSrch").val().trim();
+		var routeType = $("#routeType").val().trim();
+		/* 
+			var data={
+				strSrch:strSrch,
+				aaa:"aaa",
+				no : 1
+		}//JSON 형식으로 이런식으로 처리도가능 
+		*/
+		event.preventDefault();
+		
+		$.ajax({
+			url:"/api/bus/search",
+			//{name:value} -->name은 변수가 아님
+			data:{
+				strSrch:strSrch,
+				routeType:routeType
+				},
+			success:function(buslist){
+				$("#bus-display").html(buslist);
+			}
+		});
+		console.log(strSrch);
+		console.log(routeType);
+		
+	};
+	
+
+</script>
+</head>
+<body>
+<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<p>버스 API</p>
+	<form id="search" onsubmit="busSearchOnsubmitAtForm(event)">
+		<label>버스 번호</label>
+		<input type="text" id="strSrch">
+		<select id="routeType">
+			<option th:value="1">공항버스</option>
+			<option th:value="2" value="2">마을버스(초록)</option>
+			<option th:value="3" value="3">간선버스(파랑)</option>
+			<option th:value="4" value="4">지선버스(초록)</option>
+			<option th:value="5" value="5">순환버스</option>
+			<option th:value="6" value="6">인천버스</option>
+			<option th:value="7" value="7">경기버스</option>
+		</select>
+		<button>검색</button>
+	</form>
+	<div id="bus-display">
+	
+	</div>
+</body>
+</html>

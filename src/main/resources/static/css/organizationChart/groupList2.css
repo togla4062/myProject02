@@ -1,0 +1,6 @@
+@charset "UTF-8";
+
+/* 수민 추가! css 사용해서 조직도에는 안보이게 했습니다 */
+.group-non{
+	display: none;
+}

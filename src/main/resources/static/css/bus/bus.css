@@ -1,0 +1,64 @@
+@charset "UTF-8";
+
+.busSrch{
+	width: 1550px;
+	margin: 10px auto;
+	color: #6f6f6f;
+}
+
+h2{
+	justify-content: center;
+	display: flex;
+	border-radius: 15px;
+	border: 2px solid white;
+	background-color: #4b99da;
+	color: white;
+	font-size: 30px;
+}
+
+.area{
+	justify-content: center;
+	display: flex;	
+}
+
+.areaSrc{
+	justify-content: center;
+	display: flex;
+}
+
+input {
+	width: 300px;
+	height: 40px;
+	font-size: 18px;
+	font-weight:bold;
+	outline: none;
+	background-color: #4b99da;
+	caret-color: white;
+	text-align: center;
+	color: white;
+	border-radius: 15px;
+	border: 2px solid white;
+}
+
+.busBtn {
+	border: 1px solid white;
+	border-radius: 10%;
+	width: 50px;
+	height: 35px;
+	margin: 4px;
+	margin-left: 15px;
+	background-color:#4b99da; 
+	color: white;
+}
+.busSrcBtn{
+	border: 1px solid white;
+	border-radius: 10px;
+	width: 100px;
+	height: 35px;
+	margin: 4px;
+	margin-left: 15px;
+	background-color:#4b99da; 
+	color: white;
+}
+
+

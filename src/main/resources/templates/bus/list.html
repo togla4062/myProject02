@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<table style="text-align: center;">
+	<thead>
+		<tr>
+			<!--<th>노선ID</th>-->
+			<th style="width: 100px;">버스번호</th>
+			<!--<th>노선유형</th>-->
+			<th style="width: 150px;">기점</th>
+			<th style="width: 150px;">종점</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="dto:${list}">
+			<!--/*<td th:text="${dto.busRouteId}">노선ID</td>*/-->
+			<td th:if="${dto.routeType.equals('1')}">
+				<input type="hidden" th:value="${dto.busRouteId}" class="busRouteId">
+				<input type="hidden" th:value="${dto.routeType}" >
+				<a style="color: red;" th:onclick="|getStaionsByRouteList(this)|">[[${dto.busRouteNm}]]</a>	
+			</td>
+			<!--<td th:text="${dto.routeType}">노선유형</td>-->
+			<td th:if="${dto.routeType.equals('1')}" th:text="${dto.stStationNm}">기점</td>
+			<td th:if="${dto.routeType.equals('1')}" th:text="${dto.edStationNm}">종점</td>
+		</tr>
+	</tbody>
+</table>	
+
+</html>

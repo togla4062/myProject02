@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/board/board-list.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<a class="list-a" href="/Board/cncList">경조사</a>
+			</div>
+			<div class="block" sec:authorize="isAnonymous()"></div>
+			<div class="flex right">
+				<a sec:authorize="isAuthenticated()" class="list-button"
+					href="/Board/cncWrite">글쓰기</a>
+			</div>
+			<div class="flex center back-list">
+				<table id="list" class="list-table">
+					<tr class="list-2">
+						<th width="50px">번호</th>
+						<th width="200px">경조사일</th>
+						<th>제목</th>
+						<th width="150px">작성자</th>
+						<th width="200px">작성일</th>
+					</tr>
+					<tbody>
+						<tr th:if="${cncList.isEmpty()}">
+							<td colspan="5">해당 게시판에 등록된 글이 없습니다.</td>
+						</tr>
+						<tr th:if="${cncList.isEmpty()}==false"
+							th:each="list : ${cncList}"
+							th:classappend="${list.eventDate < today}? 'today' ">
+							<td th:text="${list.cncNo}"></td>
+							<td th:text="${list.eventDate}"></td>
+							<td><a th:href="@{/cncDetail(cncNo=${list.cncNo})}">[[${list.title}]]</a></td>
+							<!-- 	<td><a th:href="|/cncDetail?cncNo=${list.cncNo}|">[[${list.title}]]</a></td> -->
+							<td th:text="${list.registNo.name}"></td>
+							<td
+								th:text="${#temporals.format(list.createDate,'yyyy/MM/dd HH:mm')}"></td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+		<div class="search center">
+			<form action="" method="get" class="flex around">
+				<select class="searchType" name="searchType">
+					<option value="title">제목으로 검색</option>
+					<option value="content">내용으로 검색</option>
+					<option value="name">작성자로 검색</option>
+				</select> <input class="search-input" type="text" name="search"
+					placeholder="검색할 내용을 입력해 주세요" required="required">
+				<button class="list-button">[검색하기]</button>
+				<div>
+					<a class="list-button" href="/Board/cncList">[전체보기]</a>
+				</div>
+			</form>
+		</div>
+		<div class="pageBTN" th:if="${cncList.getTotalPages}>0">
+			<a th:if="${cncList.hasPrevious()}"
+				th:href="|/Board/cncList?pageNum=${cncList.getNumber()}&search=${search}&searchType=${searchType}|">[이전]</a>
+			<a th:if="${cncList.getNumber()}>0" th:text="${cncList.getNumber()}"
+				th:href="|/Board/cncList?pageNum=${cncList.getNumber()}&search=${search}&searchType=${searchType}|">현재페이지-1</a>
+			<a id="currentPage" th:text="${cncList.getNumber()+1}">현재페이지</a> <a
+				th:if="${cncList.getNumber()+2<=cncList.getTotalPages()}"
+				th:text="${cncList.getNumber()+2}"
+				th:href="|/Board/cncList?pageNum=${cncList.getNumber()+2}&search=${search}&searchType=${searchType}|">현재페이지+1</a>
+			<a th:if="${cncList.getNumber()+3<=cncList.getTotalPages()}"
+				th:text="${cncList.getNumber()+3}"
+				th:href="|/Board/cncList?pageNum=${cncList.getNumber()+3}&search=${search}&searchType=${searchType}|">현재페이지+2</a>
+			<a th:if="${cncList.hasNext()}"
+				th:href="|/Board/cncList?pageNum=${cncList.getNumber()+2}&search=${search}&searchType=${searchType}|">[다음]</a>
+		</div>
+	</div>
+</main>
+</html>

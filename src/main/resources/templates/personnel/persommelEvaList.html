@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/personnelEva/personnelEva.css">
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script src="/js/personnerlEva/personnerlEva.js"></script>
+<!-- <script src="/js/board/CNCEdit.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
+<script th:inline="javascript">
+	$(function(){
+		
+		$("#ex1").on("click",function(event){
+			/*   event.preventDefault();
+			  this.blur(); // Manually remove focus from clicked link.
+			  $.get(this.href, function(html) {
+				  alert("ffs")
+			    $(html).appendTo('body').modal();
+			  });
+		
+			$.ajax({				
+				method:"POST",
+				url:"/personnelEva/bestEmp",			
+				contentType:"application/json",
+				dataType:"json",
+				data:JSON.stringify({"no" : 1}),
+				success:bestEmpListFunc,
+				error:function(){
+					console.log("통신실패");
+				}
+				
+			});//ajax close
+		
+		 */		
+			
+		})
+	})
+	
+	function bestEmpListFunc(bestEmpList){
+	/* 	const bestEmp = JSON.parse(bestEmpList)
+		
+		console.log(bestEmp) */
+		
+	}
+	
+</script>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<a href="/personnelEvaList">인사 평가 리스트</a>
+			</div>
+				<div id="ex1" class="modal">
+				<table>
+				<tr>
+					<th><h2>** 우수사원 **</h2></th>
+				</tr>
+					<tbody>
+						<tr th:each="emplist : ${empList}">
+							<td>[[${emplist.name}]]</td>					
+					</tbody>
+				</table>
+ 					<a href="#" rel="modal:close"></a>	
+				</div>
+				<p class="flex center"><a href="#ex1" rel="modal:open" style="padding: 10px; display: inline-block; border-radius: 15px; font-size: 17px; color: #4b99da;" >우수사원 보기</a><p>
+			
+			<div class="wrap-1">
+				<form class="flex center group-form" >
+			      <select id="department" onchange="departmentClicked()">
+						<option value="0" selected>부서별조회</option>
+						<option th:each="departments : ${department}" th:value="${departments.departmentNo}" th:utext="${departments.departmentName}"></option>
+					</select>
+	   			 </form>
+	   		</div>
+		<div class="flex center back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>사원명</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>내선번호</th>
+						<th>주업무</th>
+						<th>등급</th>
+						<th sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')">인사평가</th>
+					</tr>
+					<tbody id="emp-list">
+						<tr th:each="list : ${list1}">
+							<td>[[${list.name}]]</td>
+							<!-- <td th:onclick="|location.href='/ozc/groupDetail/${list.no}'|" th:text="${list.name}">사원명</td> -->
+							<td th:text="${list.departmentNo.departmentName}">부서</td>
+							<td th:text="${list.position.label}">직급</td>
+							<td th:text="${list.extension}">내선번호</td>
+							<td th:text="${list.mainWork}">주업무</td>
+							<td class="group-non" style="color: rgb(1, 20, 190)" th:if="${list.empGrade == null}" th:text="평가안함">등급</td>
+				          	<td class="group-non" th:if="${list.empGrade != null}" th:text="${list.empGrade}">등급</td>
+				           	<td class="group-non" sec:authorize="hasAnyRole('ROLE_PERSONAL')"> 
+				           	    <a th:if="${#authentication.principal.departmentNo.departmentName} == ${list.departmentNo.departmentName}"
+				          	   	   th:unless="${#authentication.principal.Name} == ${list.name}"
+				          	       th:href="|/personnelEva/${list.no}|">인사평가
+				          	    </a>			
+				          	    <a th:if="${#authentication.principal.departmentNo.departmentName} != ${list.departmentNo.departmentName}" th:text="x"></a>
+							 </td>
+							 <td class="group-non" sec:authorize="hasAnyRole('ROLE_CEO')">
+								<a th:unless="${#authentication.principal.Name} == ${list.name}"
+									th:if="${list.positionRank} == 1"
+									th:href="|/personnelEva/${list.no}|">인사평가
+								</a>
+							</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			<!-- 페이징 시작 230117 안나 작성 230118 한아 수정-->
+			<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 한 페이지당 몇 개까지 보여줄건지 -->
+			<div id="paging">
+				<div th:if="${#lists.isEmpty(list1)}" style="text-align: center;">조회 결과가 없습니다.</div>
+				<div th:if="${!#lists.isEmpty(list1)}">
+					<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center Eva-ul">
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:href="|/personnelEvaList?page=0|">&lt;&lt;</a>
+						</li>
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:href="|/personnelEvaList?page=${start-endPage}|">&lt;</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+							<a th:href="|/personnelEvaList?page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지일 경우 -->
+						<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+							<a th:href="|/personnelEvaList?page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}">
+							<a th:href="|/personnelEvaList?page=${start+endPage}|">&gt;</a>
+						</li>
+						<li th:if="${end lt pageTotal}">
+							<a th:href="|/personnelEvaList?page=${pageTotal-1}|">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 페이징 끝-->
+		</section>
+	</div>
+</main>
+</html>

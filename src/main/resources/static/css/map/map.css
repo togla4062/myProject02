@@ -1,0 +1,40 @@
+@charset "UTF-8";
+.map-wrap{
+	width: 95%;
+	height:95vh;
+	margin:40px auto;
+	margin-bottom:0;
+	background: #a4cdf2;
+	position: relative;
+}
+#map{
+	width: calc(100% - 120px);
+	height: calc(100% - 320px);
+	margin:0 60px;
+	box-sizing: border-box;
+	border: 1px solid #4b99da;
+}
+.btn-wrap{
+	margin-left: 60px;
+	margin-bottom: 30px;
+	margin-top: 30px;
+}
+.btn-wrap button{
+	background: #4b99da;
+	color:#fff;
+	font-size: 24px;
+	display: inline-block;
+	padding: 5px 0;
+	border-radius: 5px;
+	margin-left: 10px;
+	width: 150px;
+}
+.btn-wrap button:first-child {
+	margin-left:0;
+}
+.dn{
+	display: none;
+}
+.dn:first-child {
+	display:block;
+}

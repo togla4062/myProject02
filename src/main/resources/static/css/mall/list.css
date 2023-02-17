@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+.mypage-1{
+	margin: 70px 50px;	
+}
+
+.page-title{
+	width: 750px;
+}
+
+.page-title>div>h4{
+	margin-right: 15px;
+}
+
+.tour-list{
+	height: 240px;
+	margin: 20px auto;
+}
+.kota-price>h5{
+	line-height: 36px;
+}
+.kota-price>h5:nth-child(2){
+	text-decoration: line-through;
+}
+.kota-price>h5:nth-child(3){
+	color: #008aff;
+}
+.kota-price>a{
+	border: 1px solid #555;
+	margin: 0 20px 0 50px;
+	padding: 5px 10px;
+}
+.kota-price>a:hover {
+	background-color: #008aff;
+	border-color: #fff;
+	color: #fff;
+}
+.sale-rate{
+	display: none;
+	justify-content: flex-end;
+	margin-top: 3px;
+	/* margin-right: 25px; */
+	font-size: 15px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+.percent{
+	margin-right: 28px;
+}
+.today{
+	color: #222;
+	padding: 0px 5px;
+	line-height: 30px;
+}
+.rate{
+	line-height: 30px;
+}
+.exchangeinfo{
+	padding-bottom: 20px;
+	border-bottom: 1px dashed #008aff;
+	font-size: 14px;
+}
+.gt{
+	color: #008aff;
+	line-height: 30px;
+	font-weight: 700;
+	margin-right: 5px;
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/board/board-detail.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/map/map.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+
+<script
+    defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCRHAdqPRdlxtdFXIJ2aP_MtNDmmomPkEw&callback=initMap"
+  ></script>
+<script>
+var map;
+
+function initMap() {
+	$(function(){
+		map = new google.maps.Map(document.getElementById('map'), {
+			  center: {lat: 37.5663, lng:  126.9779}, //위도 경도
+			  zoom: 13 //숫자클수록 지도가 자세히보임
+			 });
+		var positions=[];
+			$(".coord").each(function(index, item){
+				var lat=$(item).find(".lat").val();
+				var lng=$(item).find(".lng").val();
+				var result=
+				{		
+						label:"★",
+						title: $(item).find(".title").val(),
+						lat:parseFloat(lat),
+						lng:parseFloat(lng)
+				};
+				positions.push(result);
+			})
+			console.log(positions);
+		var	image = new google.maps.MarkerImage( 'icon/marker.png',
+                    '',
+                    new google.maps.Size(60, 60));
+		for(var i = 0; i < positions.length; i++){
+		var marker = new google.maps.Marker({
+			position: {lat:positions[i].lat, lng:positions[i].lng}, // 마커가 위치할 위도와 경도(변수)
+			map: map,
+			label:positions[i].label,
+			icon: image, // 마커로 사용할 이미지(변수)
+		 	title: positions[i].title // 마커에 마우스 포인트를 갖다댔을 때 뜨는 타이틀
+		 });
+		}
+	});
+}
+function ko(){
+	$(".dn").css({"display":"none"})
+	$(".dn").eq(0).css({"display":"block"})
+}
+function jp(){
+	$(".dn").css({"display":"none"})
+	$(".dn").eq(1).css({"display":"block"})
+}
+function am(){
+	$(".dn").css({"display":"none"})
+	$(".dn").eq(2).css({"display":"block"})
+}
+function ch(){
+	$(".dn").css({"display":"none"})
+	$(".dn").eq(3).css({"display":"block"})
+}
+function fr(){
+	$(".dn").css({"display":"none"})
+	$(".dn").eq(4).css({"display":"block"})
+}
+
+function seoul(){
+	var moveLatLon= new google.maps.LatLng(37.5663, 126.9779)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function inchun(){
+	var moveLatLon= new google.maps.LatLng(37.4572, 126.7049)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function busan(){
+	var moveLatLon= new google.maps.LatLng(35.1611, 129.046)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function oulsan(){
+	var moveLatLon= new google.maps.LatLng(35.5469, 129.2547)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function jeju(){
+	var moveLatLon= new google.maps.LatLng(33.5013, 126.5293)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function sejong(){
+	var moveLatLon= new google.maps.LatLng(36.561, 127.2586)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function daejun(){
+	var moveLatLon= new google.maps.LatLng(36.3403, 127.3929)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function daegu(){
+	var moveLatLon= new google.maps.LatLng(35.8441, 128.5616)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function khangju(){
+	var moveLatLon= new google.maps.LatLng(35.1582, 126.8335)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function tokyo(){
+	var moveLatLon= new google.maps.LatLng(35.67764561665217, 139.76899648345267)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function tokyo(){
+	var moveLatLon= new google.maps.LatLng(35.013416215561314, 135.76835970767496)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function huku(){
+	var moveLatLon= new google.maps.LatLng(33.570837648728734, 130.35620442802673)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function kyoto(){
+	var moveLatLon= new google.maps.LatLng(35.02697403757726, 135.76641083982136)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function nago(){
+	var moveLatLon= new google.maps.LatLng(35.145966987119245, 136.92356289134614)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function satpo(){
+	var moveLatLon= new google.maps.LatLng(43.062148397053335, 141.35376357952555)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function sing(){
+	var moveLatLon= new google.maps.LatLng(38.90684703286991, -77.03715610156623)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function newyo(){
+	var moveLatLon= new google.maps.LatLng(40.71718251357751, -74.00303247510942)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function las(){
+	var moveLatLon= new google.maps.LatLng(36.17371003235691, -115.14136020966191)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function hongkong(){
+	var moveLatLon= new google.maps.LatLng(22.329799214038726, 114.1695788523228)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+function basing(){
+	var moveLatLon= new google.maps.LatLng(39.91116287929256, 116.40567646407894)
+	map.panTo(moveLatLon);
+    map.setZoom(13);
+}
+</script>
+</head>
+<body>
+	<main>
+		
+		<th:block th:insert="~{/layout/sideMenu :: header}" />
+		<div class="map-wrap">
+			<div style="width: 100%; height: 100%;">
+				<div class="btn-wrap flex">
+					<button onclick="ko()">한국</button>
+					<button onclick="jp()">일본</button>
+					<button onclick="am()">미국</button>
+					<button onclick="ch()">중국</button>
+				</div>
+				<div class="btn-wrap btn-ji flex">
+					<div class="dn flex">
+						<button onclick="seoul()">서울</button>
+						<button onclick="inchun()">인천</button>
+						<button onclick="busan()">부산</button>
+						<button onclick="oulsan()">울산</button>
+						<button onclick="jeju()">제주도</button>
+						<button onclick="sejong()">세종</button>
+						<button onclick="daejun()">대전</button>
+						<button onclick="daegu()">대구</button>
+						<button onclick="khangju()">광주</button>
+					</div>
+					<div class="dn flex">
+						<button onclick="tokyo()">도쿄</button>
+						<button onclick="huku()">후쿠오카</button>
+						<button onclick="kyoto()">교토</button>
+						<button onclick="nago()">나고야</button>
+						<button onclick="satpo()">삿포로</button>
+					</div>
+					<div class="dn flex">
+						<button onclick="sing()">워싱턴</button>
+						<button onclick="newyo()">뉴욕</button>
+						<button onclick="las()">라스베이거스</button>
+					</div>
+					<div class="dn flex">
+						<button onclick="hongkong()">홍콩</button>
+						<button onclick="basing()">베이징</button>
+					</div>
+					
+				</div>
+				<div id="map"></div>
+				<ul>
+					<li th:each="dto:${list}" class="coord">
+						<input type="hidden" th:value="${dto.no}">
+						<input type="hidden" class="title" th:value="${dto.name}">
+						<input type="hidden" class="lat" th:value="${dto.latitude}">
+						<input type="hidden" class="lng" th:value="${dto.longitude}">
+					</li>
+				</ul>
+			</div>
+		</div>
+	</main>
+
+</body>
+</html>

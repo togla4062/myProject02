@@ -1,0 +1,114 @@
+!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/board/board-detail.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="/js/board/CNCEdit.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="detail-1">
+		<p class="top-menu">조회</p>
+		<form class="board-veiw-mode">
+			<div>
+				<table class="detail-table table-1" border="1">
+					<tr>
+						<td width="150px">글번호</td>
+						<td th:text="${cncDetail.cncNo}">1</td>
+					</tr>
+					<tr>
+						<td>경조사일</td>
+						<td th:text="${cncDetail.eventDate}"></td>
+					</tr>
+					<tr>
+						<td>작성자</td>
+						<td th:text="${cncDetail.registNo.name}">김대리</td>
+					</tr>
+
+					<tr>
+						<td>제목</td>
+						<td th:text="${cncDetail.title}"></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td style="height: 300px; vertical-align: top;"
+							th:text="${cncDetail.content}"></td>
+					</tr>
+					<tr>
+						<td>작성일</td>
+						<td
+							th:text="${#temporals.format(cncDetail.createDate,'yyyy/MM/dd hh:mm')}">2022.1.1</td>
+					</tr>
+
+				</table>
+			</div>
+			<button
+				th:if="${#authentication.principal.no} == ${cncDetail.registNo.no}"
+				type="button" class="veiw-mode detail-2" onclick="boardEditModeOn()">[
+				수정하기 ]</button>
+		</form>
+		<form class="board-edit-mode" action="/cncEdit" method="post" name="editfrm">
+			<div>
+				<table class="detail-table table-1" border="1">
+					<tr>
+						<td width="150px">글번호</td>
+						<td th:text="${cncDetail.cncNo}">1</td>
+					</tr>
+					<tr>
+						<td>경조사일</td>
+						<td><input th:value="${cncDetail.eventDate}"
+							th:name="eventDate" id="Date" th:type="date" min="yyy" max="zzz"></td>
+					</tr>
+
+					<tr>
+						<td>작성자</td>
+						<td th:text="${cncDetail.registNo.name}">김대리</td>
+					</tr>
+					<tr>
+						<td>제목</td>
+						<td><textarea rows="1" cols="93" name="title" class="insert"
+								required="required"></textarea></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td style="height: 300px; vertical-align: top;"><textarea
+								rows="14" cols="93" name="content" class="insert"
+								required="required"></textarea></td>
+					</tr>
+					<tr>
+						<td>작성일</td>
+						<td
+							th:text="${#temporals.format(cncDetail.createDate,'yyyy/MM/dd hh:mm')}">2022.1.1</td>
+					</tr>
+				</table>
+			</div>
+			<div class="flex between">
+				<button type="button" class="detail-2" onclick="boardEditModeOff()">[
+					취소 ]</button>
+				<input type="hidden" th:value="${cncDetail.registNo.no}"
+					th:name="no"> <input type="hidden"
+					th:value="${cncDetail.cncNo}" th:name="cncNo">
+				<button class="detail-2" onclick="editCheck()">[ 수정완료 ]</button>
+			</div>
+		</form>
+		<div
+			th:if="${#authentication.principal.no} == ${cncDetail.registNo.no}">
+			<form action="/cncboardDelete" method="post" name="removefrm">
+				<input type="hidden" th:value="${cncDetail.cncNo}" th:name="cncNo">
+				<button class="detail-2" onclick="removeCheck()">[ 삭제 ]</button>
+			</form>
+		</div>
+		<!-- //////////////////////////////////////// -->
+		<div class="back-1">
+			<a class="flex center" href="/Board/cncList">뒤로가기</a>
+		</div>
+	</div>
+</main>
+</body>
+</html>

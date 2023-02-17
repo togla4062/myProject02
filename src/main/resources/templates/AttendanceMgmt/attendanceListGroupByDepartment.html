@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<div class="flex center back-list">
+	<table class="list-table">
+		<thead>
+			<tr class="list-2">
+				<th></th>
+				<th>이름</th>
+				<th>부서명</th>
+				<th>직급</th>
+				<th>업무시간</th>
+				<th>상태</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="list:${list2}">
+				<td th:text="${list.employeeNo}">1</td>
+				<td><a th:href="|/personalAttendance/${list.employeeNo}|">[[${list.name}]]</a></td>
+				<td th:text="${list.department}">마케팅팀</td>
+				<td th:text="${list.position}">팀장</td>
+				<td th:if="${list.status} == '근무종료'" th:text="${list.workingHour}"></td>
+				<td th:if="${list.status} != '근무종료'"></td>
+				<td th:text="${list.status}"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- 페이징 시작 230117 안나 작성-->
+<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 내비게이션 숫자 총 몇개로 할건지 -->
+<div th:if="${nullcheck == true}" style="text-align: center;">조회 결과가 없습니다.</div>
+<div id="nav" th:if="${nullcheck == false}">
+	<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center">
+		<!-- 시작 페이지가 1보다 클 경우 -->
+		<li th:if="${start ne 1}">
+			<a th:href="|/attendanceList?page=0|">&lt;&lt;</a>
+		</li>
+		<!-- 시작 페이지가 1보다 클 경우 -->
+		<li th:if="${start ne 1}">
+			<a th:href="|/attendanceList?page=${start-endPage}|">&lt;</a>
+		</li>
+		<!-- 마지막 페이지가 아닐 경우 -->
+		<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+			<a th:href="|/attendanceList?page=${pageNo-1}|">[[${pageNo}]]</a>
+		</li>
+		<!-- 마지막 페이지일 경우 -->
+		<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+			<a th:href="|/attendanceList?page=${pageNo-1}|">[[${pageNo}]]</a>
+		</li>
+		<!-- 마지막 페이지가 아닐 경우 -->
+		<li th:if="${end lt pageTotal}">
+			<a th:href="|/attendanceList?page=${start+endPage}|">&gt;</a>
+		</li>
+		<li th:if="${end lt pageTotal}">
+			<a th:href="|/attendanceList?page=${pageTotal-1}|">&gt;&gt;</a>
+		</li>
+	</ul>
+</div>
+<!-- 페이징 끝-->
+</html>

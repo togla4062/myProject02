@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" 
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security"
+th:replace="layout/layout :: layout(~{this::head}, ~{this::main})">
+<head>
+	<meta charset="UTF-8">
+	<title>근태리스트</title>
+	<link rel="stylesheet" href="/css/attendance/personal-working-day.css">
+	<link rel="stylesheet" href="/css/attendance/dateSearch.css">	
+	<script type="text/javascript">
+		$(function() {
+			
+			defaultTime();
+			function defaultTime(){ //날짜 기본값 오늘로 설정하는 함수
+				today = new Date().toISOString().slice(0, 10);
+				document.querySelector("#dateStart").value = today;
+				document.querySelector("#dateEnd").value = today;
+				
+				//console.log(today);
+			}
+		});
+	</script>
+	
+	<!-- 230111 수정버튼 script 비활성화 안나 -->
+<!-- 	<script type="text/javascript">
+		$(function(){
+			$("#btn-edit").click(editMode);
+			$("#btn-cancel").click(function(){
+				$("#edit-mode").hide();
+				$("#def-mode").show();
+			});
+		});
+		function editMode(){
+			$("#edit-mode").show();
+			$("#def-mode").hide();
+		}
+	</script> -->
+</head>
+<main>
+	<!-- 230104 한아 작성 230111 안나 thymeleaf 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="">
+				<a href="attendanceList" class="attendance-list"><span></span>전사 근태 리스트</a>
+				<div class="flex center title">
+					<th:block th:each="attListEmp:${attListEmp}">
+					<p th:if="${attListEmp.no == emNo}">[[${attListEmp.name}]]님 근무</p>
+				</th:block>
+				</div>
+			</div>
+			<div class="flex att-btn">
+					<a th:href="|/personalAttendance/${emNo}|"><button><span class="small-circle"></span>근태</button></a>
+					<button><span class="small-circle-selected"></span>근무</button>
+					<a th:href="|/personalDayOff/${emNo}|"><button><span class="small-circle"></span>휴가</button></a>
+			</div>
+			<div class="search center flex">
+				<form th:action="|/personalWorkingDay/dateSearch/${emNo}|" method="get">
+			    	<input class="search-input" id="dateStart" type="date" name="dateStart">
+			    	<a>~</a>
+			    	<input class="search-input" id="dateEnd" type="date" name="dateEnd">
+			    	<button type="submit" class="list-button">검색</button>
+			    </form>
+			</div>
+			<div class="flex center back-list">
+				<table class="list-table" id="def-mode">
+					<thead>
+						<tr class="list-2">
+							<th></th>
+							<th>일자</th>
+							<th>출근시간</th>
+							<th>퇴근시간</th>
+							<th>일근무시간</th>
+							<th>지정근무시간</th>
+							<th>근태항목</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="attList:${attList}">
+							<td th:text="${attListStat.count}">2</td>
+							<td th:text="${attList.date}">2023-01-06</td>
+							<td th:if="${attList.status != '미출근' and attList.status !='휴가'}" th:text="${attList.clockIn}">09:01</td>
+							<td th:if="${attList.status == '미출근' or attList.status =='휴가'}">-</td>
+							<td th:if="${attList.status == '근무종료'}" th:text="${attList.clockOut}">18:49</td>
+							<td th:if="${attList.status == '미출근' or attList.status =='휴가'}">-</td>
+							<td th:text="${attList.workingHour}">8:48</td>
+							<td th:text="${attList.designatedWorkingHour}">8시간</td>
+							<td th:text="${attList.status}"></td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<!-- 230111 수정버튼 비활성화 안나 -->
+				<!--<th:block th:each="attListEmp:${attListEmp}">
+					<form th:action="|/personalWorkingDay/${attListEmp.no}|" id="edit-mode" method="post">
+						<table class="list-table">
+							<thead>
+								<tr class="list-2">
+									<th></th>
+									<th>일자</th>
+									<th>출근시간</th>
+									<th>퇴근시간</th>
+									<th>근태항목</th>
+									<th>적요</th>
+									<th>관리</th>
+								</tr>
+							</thead>
+							적요 미정 : 휴가 시 정리
+							<tbody>
+								<tr th:each="attList:${attList}">
+									<td th:text="${attListStat.count}"><input type="hidden" name="workNo" th:value="${attListStat.workNo}"></td>
+									<td th:text="${attList.date}"></td>
+									<td><input type="time" name="clockIn"></td>
+									<td><input type="time" name="clockOut"></td>
+									<td><input type="text" name="status" size="10" th:placeholder="${attList.status}"></td>
+									<td><input type="text" name=""></td>
+									<td><button type="submit">수정완료</button><button type="button" id="btn-cancel">취소</button></td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</th:block> -->
+			</div>
+			<!-- 페이징 시작 230117 안나 작성-->
+			<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 한 페이지당 몇 개까지 보여줄건지 -->
+			<div th:if="${#lists.isEmpty(attList)}" style="text-align: center;">조회 결과가 없습니다.</div>
+			<div class="pageBTN" th:if="${!#lists.isEmpty(attList)}">
+				<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center">
+					<!-- 시작 페이지가 1보다 클 경우 -->
+					<li th:if="${start ne 1}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=0|">&lt;&lt;</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=0|">&lt;&lt;</a>
+					</li>
+					<!-- 시작 페이지가 1보다 클 경우 -->
+					<li th:if="${start ne 1}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=${start-endPage}|">&lt;</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${start-endPage}|">&lt;</a>
+					</li>
+					<!-- 마지막 페이지가 아닐 경우 -->
+					<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=${pageNo-1}|">[[${pageNo}]]</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageNo-1}|">[[${pageNo}]]</a>
+					</li>
+					<!-- 마지막 페이지일 경우 -->
+					<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=${pageNo-1}|">[[${pageNo}]]</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageNo-1}|">[[${pageNo}]]</a>
+					</li>
+					<!-- 마지막 페이지가 아닐 경우 -->
+					<li th:if="${end lt pageTotal}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=${start+endPage}|">&gt;</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${start+endPage}|">&gt;</a>
+					</li>
+					<li th:if="${end lt pageTotal}">
+						<a th:if="${check == null}" th:href="|/personalWorkingDay/${emNo}?page=${pageTotal-1}|">&gt;&gt;</a>
+						<a th:if="${check == 2}" th:href="|/personalWorkingDay/dateSearch/${emNo}?dateStart=${dateStart}&dateEnd=${dateEnd}&page=${pageTotal-1}|">&gt;&gt;</a>
+					</li>
+				</ul>
+			</div>
+			<!-- 페이징 끝-->
+		</section>
+	</div>
+</main>
+</html>

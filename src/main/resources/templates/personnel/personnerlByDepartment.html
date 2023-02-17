@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/personnelEva/personnelEva.css">
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+function departmentClicked(){
+	department=$("#department option:selected").val();
+	if(department!=0)
+		location.href="/personnelEvaList/"+department;
+	else location.href="/personnelEvaList";
+}
+</script>
+</head>
+<main>
+	<!-- 230110 한아 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<a href="/personnelEvaList">인사 평가 리스트</a>
+			</div>
+				<div class="wrap-1">
+					<form class="flex center group-form" >
+				      <select id="department" onchange="departmentClicked()">
+						<option value="0">전체부서</option>
+						<option th:each="departments : ${department}" th:value="${departments.departmentNo}" th:utext="${departments.departmentName}" th:selected="${departmentNo}==${departments.departmentNo}"></option>
+					</select>
+			    </form>
+		    </div>
+			<div class="flex center back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th>사원명</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>내선번호</th>
+						<th>주업무</th>
+						<th>등급</th>
+						<th sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')">인사평가</th>
+					</tr>
+					<tbody id="emp-list">
+						<tr th:if="${nullcheck == true}">
+							<td colspan="5">해당 부서에 등록된 사원이 없습니다.</td>
+						</tr>
+						<tr th:if="${nullcheck == false}" th:each="list : ${list2}">
+							<td>[[${list.name}]]</a></td>
+							<td th:text="${list.departmentNo.departmentName}">부서</td>
+							<td th:text="${list.position.label}">직급</td>
+							<td th:text="${list.extension}">내선번호</td>
+							<td th:text="${list.mainWork}">주업무</td>
+				            <!-- 수민 추가! css 사용해서 조직도에는 안보이게 했습니다!  -->
+				           	<td class="group-non" style="color: rgb(1, 20, 190)" th:if="${list.empGrade == null}" th:text="평가안함">등급</td>
+					        <td class="group-non" th:if="${list.empGrade != null}" th:text="${list.empGrade}" >등급</td>
+					       <td class="group-non" sec:authorize="hasAnyRole('ROLE_PERSONAL')"> 
+				           	    <a th:if="${#authentication.principal.departmentNo.departmentName} == ${list.departmentNo.departmentName}"
+				          	   	   th:unless="${#authentication.principal.Name} == ${list.name}"
+				          	       th:href="|/personnelEva/${list.no}|">인사평가
+				          	    </a>			
+				          	    <a th:if="${#authentication.principal.departmentNo.departmentName} != ${list.departmentNo.departmentName}" th:text="x"></a>
+							 </td>
+							<td class="group-non" sec:authorize="hasAnyRole('ROLE_CEO')">
+								<a th:unless="${#authentication.principal.Name} == ${list.name}"
+									th:if="${list.positionRank} == 1"
+									th:href="|/personnelEva/${list.no}|">인사평가
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+			<!-- 페이징 시작 230117 안나 작성 230118 한아 수정-->
+			<!-- pageNum : 현재 페이지 번호, pageSize : 한 페이지의 게시글 수, pageTotal : 총 페이지 수, endPage : 한 페이지당 몇 개까지 보여줄건지 -->
+			<div id="paging">
+				<div th:if="${#lists.isEmpty(list1)}" style="text-align: center; color:  #61a8e9;">1</div>
+				<div th:if="${!#lists.isEmpty(list1)}">
+					<ul th:with="start=${((pageNum-1)/endPage)*endPage+1}, end=${start + endPage - 1}" class="flex center Eva-ul">
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:href="|/personnelEvaList?page=0|">&lt;&lt;</a>
+						</li>
+						<!-- 시작 페이지가 1보다 클 경우 -->
+						<li th:if="${start ne 1}">
+							<a th:href="|/personnelEvaList?page=${start-endPage}|">&lt;</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}" th:each="pageNo :${#numbers.sequence(start,end)}">
+							<a th:href="|/personnelEvaList?page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지일 경우 -->
+						<li th:if="${end >= pageTotal}" th:each="pageNo :${#numbers.sequence(start,pageTotal)}">
+							<a th:href="|/personnelEvaList?page=${pageNo-1}|">[[${pageNo}]]</a>
+						</li>
+						<!-- 마지막 페이지가 아닐 경우 -->
+						<li th:if="${end lt pageTotal}">
+							<a th:href="|/personnelEvaList?page=${start+endPage}|">&gt;</a>
+						</li>
+						<li th:if="${end lt pageTotal}">
+							<a th:href="|/personnelEvaList?page=${pageTotal-1}|">&gt;&gt;</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<!-- 페이징 끝-->
+	</div>
+</main>
+</html>

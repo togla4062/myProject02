@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* 230104 한아 작성 */
+.list-1{
+	padding: 1.5em;
+}
+.list-1 section div.title, .back-list{
+	padding: 5px;
+}
+.att-btn{
+	display: inline-block;
+	padding: 10px;
+}
+.list-1 section div p{
+	padding: 10px;
+    display: inline-block;
+    background-color: #4b99da;
+    border-radius: 15px;
+    font-size: 20px;
+    color: white;
+}
+.list-table{
+	 border-collapse: collapse;
+     width: 1200px;
+}
+tr.list-2 th, .list-table tr td{
+	 text-align: center;
+	 padding: 10px;
+     border-bottom: 3px solid #a4cdf2;
+}
+tr.list-2 th{
+	background: #a4cdf2;
+	color: white;
+}
+.list-table tr td{
+	color: #6f6f6f;
+}
+.bar{
+	width: 1px;
+    height: 13px;
+    margin: 0px 12px;
+    background-color: rgb(217, 217, 217);
+}
+.small-circle {
+    width: 10px;
+    height: 10px;
+    background-image: url(/image/icon/circle-gray.png);
+    background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+.small-circle-selected {
+    width: 10px;
+    height: 10px;
+    background-image: url(/image/icon/circle-point.png);
+    background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 1px;
+}
+
+
+.att-btn button{
+	font-size: 17px;
+	color: #222;
+}

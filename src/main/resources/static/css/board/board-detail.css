@@ -1,0 +1,101 @@
+@charset "UTF-8";
+
+.detail-1 {
+	padding: 1.5em;
+}
+
+.detail-2 {
+	color: #4b99da;
+}
+
+/* .detail-1 p {
+	padding: 20px;
+	display: flex;
+	border-radius: 15px;
+	font-size: 15px;
+	color: #4b99da;
+	justify-content: center;
+	font-weight: 600;
+} */
+.table-1 { /* 크기 늘렸습니다 1.5 수민 */
+	border-collapse: collapse;
+	width: 1200px;
+}
+
+.table-1 tr td {
+	padding: 10px;
+	border: 2px solid #bbbbbb;
+}
+
+.detail-table tr td:nth-child(1), .table-tr1 {
+	background: #a4cdf2;
+	color: white;
+	text-align: center;
+}
+
+.detail-table tr td:nth-child(2) {
+	color: #797979;
+}
+
+.table-tr2 {
+	text-align: center;
+	color: #797979;
+}
+
+#detail-reply {
+	padding: 10px;
+	display: flex;
+	border: none;
+	border-radius: 10px;
+	font-size: 13px;
+	color: #4b99da;
+	justify-content: center;
+	font-weight: 600;
+}
+
+.back-1 {
+	padding-top: 10px;
+}
+
+.back-1 a {
+	background-color: #4b99da;
+	width: 5em;
+	margin: 0 auto;
+	border-radius: 10px;
+	color: white;
+	padding: 1px;
+}
+
+.Cnc-content {
+	height: 15em;
+	width: 70em;
+}
+
+.insert {
+	outline: none;
+	border: none;
+	font-size: 18px;
+	color: #A4CDF2;
+	font-weight: bold;
+}
+
+.list-button {
+	display: inline-block;
+	padding: 10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #4b99da;
+}
+
+.top-menu {
+	width: 100px;
+	padding: 10px;
+	background-color: #4b99da;
+	border-radius: 15px;
+	font-size: 20px;
+	color: white;
+	display: flex;
+	justify-content: center;
+	margin: 10px auto;
+}

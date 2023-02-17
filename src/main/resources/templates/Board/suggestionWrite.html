@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/board/board-write.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+   		<div class="wrap writer-1">
+   			<div class="flex center">
+   				<p>건의사항</p>
+   			</div>
+	   		<div class="writer-back">
+	    		<form action="/Board/suggestionWrite" method="post">
+	    			<table class="writer-2">
+	    				<tr>
+	    					<td class="writer-title">
+	    						<input type="text" name="title" placeholder="제목입력" required="required">
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td class="writer-content">
+	    						<textarea rows="20" cols="50" name="content" placeholder="내용을 입력하세요" required="required"></textarea>
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td class="flex center">
+	    						<input type="hidden" th:name="no" th:value="${#authentication.principal.no}">
+								<button class="writer-button">등록</button>
+	    					</td>
+	    				</tr>
+	    			</table>
+	    		</form>
+	   		</div>
+	   		<div class="back-1">
+				<a class="flex center" href="/Board/suggestionList">뒤로가기</a>
+			</div>
+   		</div>
+    </main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+th{
+	border: 3px solid #a9a9a9;
+	background-color: #4b99da;
+	color: white;
+	font-weight: bold;
+}
+
+td{
+	border: 1px solid #a9a9a9;
+	
+}

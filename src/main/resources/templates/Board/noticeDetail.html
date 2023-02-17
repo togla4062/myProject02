@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<link rel="stylesheet" href="/css/board/board-detail.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<script src="/js/notice/notice.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="detail-1">
+		<p class="top-menu">조회</p>
+		<form class="board-veiw-mode">
+			<div>
+				<table class="detail-table table-1" border="1">
+					<tr>
+						<td width="150px">글번호</td>
+						<td th:text=${noticeDetail.noticeNo}>1</td>
+					</tr>
+					<tr>
+						<td>작성자</td>
+						<td th:text=${noticeDetail.registNo.name}>김대리</td>
+					</tr>
+					<tr>
+						<td>제목</td>
+						<td th:text=${noticeDetail.title}></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td style="height: 300px; vertical-align: top;"
+							th:text=${noticeDetail.content}></td>
+					</tr>
+					<tr>
+						<td>작성일</td>
+						<td
+							th:text="${#temporals.format(noticeDetail.createDate,'yyyy/MM/dd hh:mm')}">2022.1.1</td>
+					</tr>
+				</table>
+			</div>
+			<button
+				th:if="${#authentication.principal.no} == ${noticeDetail.registNo.no}"
+				type="button" class="veiw-mode" onclick="boardEditModeOn()">[수정하기]</button>
+		</form>
+		<form class="board-edit-mode" action="/noticeEdit" method="post" name="boardEdit">
+			<div>
+				<table class="detail-table table-1" border="1">
+					<tr>
+						<td width="150px">글번호</td>
+						<td th:text=${noticeDetail.noticeNo}>1</td>
+					</tr>
+					<tr>
+						<td>작성자</td>
+						<td th:text=${noticeDetail.registNo.name}>김대리</td>
+					</tr>
+					<tr>
+						<td>제목</td>
+						<td><textarea rows="1" cols="93" name="title" class="insert"
+								required="required" style="resize: none;"></textarea></td>
+					</tr>
+					<tr>
+						<td>내용</td>
+						<td style="height: 300px; vertical-align: top;"><textarea
+								rows="14" cols="93" name="content" class="insert"
+								required="required" style="resize: none;"></textarea></td>
+					</tr>
+					<tr>
+						<td>작성일</td>
+						<td
+							th:text="${#temporals.format(noticeDetail.createDate,'yyyy/MM/dd hh:mm')}">2022.1.1</td>
+					</tr>
+				</table>
+			</div>
+			<div class="flex between">
+				<button type="button" onclick="boardEditModeOff()">[취소]</button>
+				<input type="hidden" th:value="${noticeDetail.registNo.no}"
+					th:name="no"> <input type="hidden"
+					th:value="${noticeDetail.noticeNo}" th:name="noticeNo">
+				<button type="button" onclick="BoardEditCheck()">[수정완료]</button>
+			</div>
+		</form>
+		<form th:action="|/Board/noticeList/${noticeDetail.noticeNo}|"
+			method="post" name="removefrm">
+			<input type="hidden" name="_method" value="DELETE">
+			<button type="button" class="list-button" onclick="BoardRemoveCheck()">[ 삭제 ]</button>
+		</form>
+		<!-- //////////////////////////////////////// -->
+		<div class="back-1">
+			<a class="flex center" href="/Board/noticeList">뒤로가기</a>
+		</div>
+	</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/approvalMgmt/dayOffApp.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		if($(".name").text() == $(".head").text() || $(".label").text()=="결재중"){
+			$(".head").css("display", "block");
+		}
+		if($(".label").text()=="결재대기"){
+			$(".btn-approval").css("display", "block");
+		}
+		if($(".label").text()=="결재대기" || $(".label").text()=="결재중"){
+			$(".return").css("display", "block");
+		}
+	});
+	function headClicked(){
+		$(".head").css("display", "block");
+	}
+	
+</script>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="day-off-main">
+		<p>휴가 신청서</p>
+		<form th:action="|/approval/${dayOffDetail.dayOffNo}|">
+			<section class="flex between">
+				<table id="table-1">
+					<tr>
+						<td>기안자</td>
+						<td th:text="${detailEmp.name}">[작성자]</td>
+					</tr>
+					<tr>
+						<td>사원번호</td>
+						<td th:text="${detailEmp.no}">[사원번호]</td>
+					</tr>
+					<tr>
+						<td>기안부서</td>
+						<td th:text="${detailEmp.departmentNo.departmentName}">[작성자 그룹]</td>
+					</tr>
+					<tr>
+						<td>직 급</td>
+						<td th:text="${detailEmp.position.label}">[직급]</td>
+					</tr>
+					<tr>
+						<td>기안일</td>
+						<td th:text="${dayOffDetail.draftDate}">[YYYY-MM-DD(요일)]</td>
+					</tr>
+				</table>
+				<table id="table-2">
+					<tr>
+						<td colspan="4">결재라인</td>
+					</tr>
+					<tr>
+						<td>기안자</td>
+						<td>부서장</td>
+						<td>대표이사</td>
+						<td>결재상태</td>
+					</tr>
+					<tr>
+						<td><span class="name">[[${detailEmp.name}]]</span></td>
+						<td onclick="headClicked()"><span class="head">[[${detailEmp.departmentNo.departmentHead}]]</span></td>
+						<td><span class="ceo">김대표</span></td>
+						<td class="label">[[${dayOffDetail.approval.label}]]</td>
+					</tr>						
+				</table>
+			</section>
+			<table id="table-3">
+				<tr>
+					<td>휴가 종류</td>
+					<td>[[${dayOffDetail.type}]]</td>
+				</tr>
+				<tr>
+					<td>기간 및 일시</td>
+					<td>[[${dayOffDetail.startDate}]] ~ [[${dayOffDetail.EndDate}]]</td>
+				</tr>
+				<tr>
+					<td>휴가 일수</td>
+					<td>신청일수 : [[${dayOffDetail.useDays}]]</td>
+				</tr>
+				<tr>
+					<td>휴가 사유</td>
+					<td><textarea rows="10" cols="128" readonly="readonly">[[${dayOffDetail.reason}]]</textarea></td>
+				</tr>
+				<tr>
+					<td colspan="2">1. 연차의 사용은 근로 기준법에 따라 전년도에 발생한 개일별 잔여 연차에 한하여
+						사용함을 원칙으로 한다.<br> 단, 최초 입사시에는 근로 기준법에 따라 발생 예정된 연차를 차용하여 월 1회
+						사용할 수 있다.<br> 2. 경조사 휴가는 행사일을 증명할 수 있는 가족 관계증명서 또는 등본, 청첩장 등을
+						제출 하여야 한다.
+					</td>
+				</tr>
+			</table>
+			<div class="btn-approval">
+				<button>승인하기</button>			
+			</div>
+		</form>
+		<form th:action="|/approvalReturn/${dayOffDetail.dayOffNo}|" method="post">
+			<ul class="btn-return">
+				<li><button class="return">반려하기</button></li>
+				<li><a href="/approvalList">뒤로가기</a></li>
+			</ul>
+		</form>
+	</div>
+</main>
+</body>
+</html>

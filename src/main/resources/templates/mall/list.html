@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/mall/list.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<!-- jQuery -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<!-- iamport.payment.js -->
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+<script type="text/javascript" src="/js/mall/pay.js"></script>
+<script type="text/javascript" src="/js/mall/calculate.js"></script>
+<script type="text/javascript">
+	var fullPrice, salePrice, saleRate;
+	$(function(){
+		fullPrice = parseInt(document.getElementById('full-price').value);
+		salePrice = parseInt(document.getElementById('sale-price').value);
+		saleRate = 100*(1-(salePrice/fullPrice));
+		saleRate = Math.round(saleRate*10)/10; //소수점 둘째자리에서 반올림
+		// javaScrip에서 id값을 받아 javaScript의 변수값을 입력합니다 //
+		document.getElementById("sale-rate").innerHTML = saleRate;
+		document.getElementById("payPrice").value = salePrice;
+		
+	})
+	function showSaleRate(){
+		$(".sale-rate").show();
+		$(".sale-rate").css("display","flex")
+	}
+	function hideSaleRate(){
+		$(".sale-rate").hide();
+	}
+	
+	//https://admin.portone.io/merchant
+	var IMP = window.IMP; // 생략 가능
+	IMP.init("imp35130315"); // 예: imp00000000
+	
+</script>
+<style type="text/css">
+    @keyframes fadeInUp {
+        0% {
+            opacity: 0;
+            transform: translate3d(0, 5%, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translateZ(0);
+        }
+    }
+ 
+    .test_obj {
+        position: relative;
+        animation: fadeInUp 2s;
+        animation-iteration-count: infinite;
+    }
+</style>
+ 
+</head>
+<main>
+	<!-- 230207 한아 작성 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap mypage-1">
+		<div class="flex center page-title">
+			<div class="tour-list">
+				<h2>말레이시아<br>코타키나발루</h2>
+				<h4><br>
+				 에메랄드빛 바다에서 즐기는 해양 액티비티부터<br>
+				 신비로운 외관의 이슬람사원, 반딧불투어,<br>
+				 세계 3대 석양으로 꼽히는 아름다운 풍경까지
+				</h4><br>
+				<div class="flex kota-price">
+					<h5>3박 5일</h5>&nbsp;
+					<h5><input type="hidden" value="990000" id="full-price">990,000</h5>&nbsp;
+					<h5 class="test_obj"><input type="hidden" value="330000" id="sale-price">330,000</h5>
+					<a onmouseenter="showSaleRate()" onmouseleave="hideSaleRate()" onclick="btnPgClicked()">특가 구매하기</a>
+					<input type="hidden" readonly="readonly" class="title" value="말레이시아 코타키나발루 특가 여행" >
+					<input type="hidden" readonly="readonly" class="payPrice" id="payPrice" value="" >
+					<input type="hidden" id="user-email" th:value="${#authentication.principal.email}" readonly="readonly">
+					<input type="hidden" id="user-name" th:value="${#authentication.principal.name}" readonly="readonly">
+				</div>
+				<div class="flex end">
+					<p class="sale-rate" id="sale-rate">할인율계산값</p><p class="sale-rate percent">% 할인중!</p>
+				</div>
+			</div>
+			<img alt="" src="/image/mall/kotakinabalu.jpg" width="400px" height="240px">
+		</div>
+		<div class="exchangeinfo">
+			<div class="flex center">
+				<p class="today">오늘의 환율정보</p>
+				<p class="gt">&gt;&gt;</p>
+				<p class="rate">말레이시아 MYR 1링깃 = 한국 KRW&nbsp;</p>
+				<p class="rate" id="rate">[[${rate}]]</p>
+				<p class="rate">원</p>
+			</div>
+			<div class="flex center">
+				<input type="text" style="width: 100px;" onkeyup="myr()" id="myr">&nbsp;링깃 =&nbsp;<input type="text" style="width: 100px;" onkeyup="krw()" id="krw">&nbsp;원
+			</div>
+		</div>
+	</div>
+</main>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="/css/board/board-detail.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<link rel="stylesheet" href="/css/map/marker.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+</head>
+<body>
+	<main>
+		<th:block th:insert="~{/layout/sideMenu :: header}" />
+		<div class="wrap">
+			<div class="addmarker-wrap">
+				<form action="/map/marker" method="post">
+					<div class="pick">
+						추천지 등록
+					</div>
+					<ul>
+						<li>
+							<input type="text" placeholder="관광지 이름을 입력해주세요" name="name">
+						</li>
+						<li>
+							<input type="text" placeholder="위도를 입력해주세요" name="latitude">
+						</li>
+						<li>
+							<input type="text" placeholder="경도를 입력해주세요" name="longitude">
+						</li>
+						<li>
+							<button>등록</button>
+						</li>
+					
+					</ul>
+					
+				</form>
+				
+			</div>
+		</div>
+	</main>
+</body>
+</html>

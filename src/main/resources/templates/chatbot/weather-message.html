@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<div class="flex center date" th:if="${msg.today}" th:text="${msg.today}"></div>
+	<div class="msg bot flex">
+		<div  class="icon">
+			<img th:src="@{/image/icon/robot.png}">
+		</div>
+		<div class="message" >
+			
+			<div class="part" th:if="${msg.info}">
+				<p th:utext="${msg.info}">안내글/인사말/메시지등</p>
+			</div>
+			<div class="part" th:if="${msg.scenario}">
+				<p>아래 질문에 대한 답을 입력해주세요</p>
+				<div class="flex center menu" >
+					<div class="part">
+						<span  th:utext="${msg.scenario}">시나리오1</span>
+						<form class="form">
+							<input type="hidden" class="order" name="order" th:value="${msg.order}" />
+							<input type="hidden" class="areaInfo" name="areaInfo" th:if="${msg.areaInfo}" th:value="${msg.areaInfo}"  />
+							<input type="hidden" class="nx" name="nx" th:if="${msg.nx}" th:value="${msg.nx}"  />
+							<input type="hidden" class="ny" name="ny" th:if="${msg.ny}" th:value="${msg.ny}"  />
+							<input type="hidden" class="fcstDate" name="fcstDate" th:if="${msg.fcstDate}" th:value="${msg.fcstDate}"  />
+							<input type="hidden" class="fcstTime" name="fcstTime" th:if="${msg.fcstTime}" th:value="${msg.fcstTime}"  />
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="part">
+				<p th:if="${msg.finalMsg}" th:text="${msg.finalMsg}"></p>
+				<div th:each="dto:${msg.items}">
+					
+					<span th:if="${dto.category=='SKY'}" style="width: 100px;">
+						<i>구름상태 : </i>
+						<img th:unless="${dto.fcstTime < '0600'}" th:src="|https://www.weather.go.kr/images/icon/NW/NB${#numbers.formatInteger(dto.fcstValue,2)}.png|">
+						<img th:if="${dto.fcstTime < '0600'}" th:src="|https://www.weather.go.kr/images/icon/NW/NB${#numbers.formatInteger(dto.fcstValue,2)+'_N'}.png|">
+					</span>
+					<span th:unless="${dto.category=='SKY'}" >
+						<i th:if="${dto.category=='TMP'}">온도 : </i>
+						<i th:if="${dto.category=='POP'}">강수확률 : </i>
+						<span th:text="${dto.fcstValue}"></span>
+						<i th:if="${dto.category=='TMP'}">&#8451;</i>
+						<i th:if="${dto.category=='POP'}">&#37;</i>
+					</span>
+				</div>
+			</div>
+			<div class="time" th:text="${msg.time}">메세지 작성 시간</div>
+		</div>
+	</div>
+</html>

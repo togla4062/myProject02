@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/organizationChart/groupDetail.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+.imggg{background-size: 100px;
+	background-size: cover;
+    background-position: center center;
+    display: inline-block;
+    width: 100px;
+    height: 100px;}
+</style>
+<script type="text/javascript">
+</script>
+</head>
+<main>
+	<!-- 230112 한아 수정 -->
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap mypage-1">
+		<div class="flex center page-title">
+			<p>사원 상세페이지</p>
+		</div>
+		<h2 th:if="${list.deleteStatus}">
+			퇴직처리되었습니다
+		</h2>
+		<form th:action="|/ozc/groupDetail/edited/${list.no}|">
+			<table class="mypage-table" th:classappend="${ list.deleteStatus ? 'deleted' : ''}">
+				<tr>
+					<td>사진</td>
+					<td><img class="imggg" th:style="|background-image: url('${list.imgUrl}');|"></td>
+				</tr>
+				<tr>
+					<td>사원번호</td>
+					<td>[[${list.no}]]</td>
+				</tr>
+				<tr>
+					<td>부서이름</td>
+					<td>
+						<select name="departmentNo">
+							<option th:each="departments : ${department}" th:value="${departments.departmentNo}" th:utext="${departments.departmentName}" th:selected="${list.departmentName}==${departments.departmentName}"></option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>이름</td>
+					<td><input type="text" name="name" th:value="${list.name}" size="15"></td>
+				</tr>
+				<tr>
+					<td>이메일</td>
+					<td><input type="text" name="email" th:value="${list.email}" size="15"></td>
+				</tr>
+				<tr>
+					<td>직급</td>
+					<td>
+						 <select name="position">
+							<option value="Intern" th:selected="${list.position}==인턴">인턴</option>
+							<option value="Staff" th:selected="${list.position}==사원">사원</option>
+							<option value="SeniorClerk" th:selected="${list.position}==주임">주임</option>
+							<option value="AssistantManager" th:selected="${list.position}==대리">대리</option>
+							<option value="Chief" th:selected="${list.position}==계장">계장</option>
+							<option value="Manager" th:selected="${list.position}==과장">과장</option>
+							<option value="GeneralManager" th:selected="${list.position}==실장">실장</option>
+							<option value="DeputyGeneralManager" th:selected="${list.position}==차장">차장</option>
+							<option value="DepartmentManager" th:selected="${list.position}==부장">부장</option>
+							<option value="CEO" th:selected="${list.position}==대표이사">대표이사</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>연락처</td>
+					<td><input type="text" name="phone" th:value="${list.phone}" size="15"></td>
+				</tr>
+				<tr>
+					<td>내선번호</td>
+					<td><input type="text" name="extension" th:value="${list.extension}" size="15"></td>
+				</tr>
+				<tr>
+					<td>입사일</td>
+					<td><input type="date" name="joinDate" th:value="${list.joinDate}" size="15"></td>
+				</tr>
+				<tr th:if="${list.deleteStatus}">
+					<td>퇴사일</td>
+					<td><input type="date" name="resignDate" th:value="${list.resignDate}" size="15"></td>
+				</tr>
+				<tr>
+					<td>생년월일</td>
+					<td><input type="date" name="birthDate" th:value="${list.birthDate}" size="15"></td>
+				</tr>
+				<tr>
+					<td>주업무</td>
+					<td><input type="text" name="mainWork" th:value="${list.mainWork}" size="15"></td>
+				</tr>
+				<tr sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')">
+					<td>급여</td>
+					<td><input type="text" name="salary" th:value="${list.salary}" size="15"></td>
+				</tr>
+				<tr>
+					<td>수정권한</td>
+					<td>[[${list.yesorno}]]</td>
+				</tr>
+			</table>
+			<div class="back-1 flex between">
+				<div class="">
+						<a class="" href="/ozc/groupList">전체목록</a>
+						<a class="" href="/ozc/groupList/retirement" th:if="${list.deleteStatus}">퇴직사원목록</a>
+						<button>수정완료</button>
+						<a th:href="|/ozc/groupDetail/${list.no}|">취소</a>
+				</div>
+				<div sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')">
+					<a th:href="|/role/manager/${list.no}|" th:if="${list.yesorno}==N">수정권한부여</a>
+					<a th:href="|/role/employee/${list.no}|" th:if="${list.yesorno}==Y">수정권한제거</a>
+					<a th:href="|/retirement/delete/${list.no}|" th:if="!${list.deleteStatus}">퇴직처리</a>
+					<a th:href="|/retirement/rollback/${list.no}|" th:if="${list.deleteStatus}">퇴직취소</a>
+				</div>
+			</div>
+		</form>
+	</div>
+</main>
+</html>

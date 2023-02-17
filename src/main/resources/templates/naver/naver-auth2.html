@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>네이버API 조직연동</title>
+<link rel="stylesheet" href="/css/commons/common.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<script>
+	$(function(){
+		$.each($(".group"),function(index,item){
+			if($(item).children().length == 0){
+				$(item).remove();
+			}
+			
+		})
+		
+	});
+</script>
+<style>
+.parent-node,
+.group{
+	position: relative;
+	margin-left: 12px;
+}
+.tree-node{
+	padding-left: 12px;
+	position: relative;
+}
+.node a{
+	display: block;
+	height: 54px;
+	line-height: 54px;
+	padding-left: 24px;
+	background-image: url("/images/icon/ico-file-fold.svg");
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+.tree-node a:before{
+	content: '';
+    position: absolute;
+    left: 0;
+    top: 1.7em;
+    bottom: 1px;
+    z-index: 2;
+    width: 12px;
+    height: 0;
+    margin-top: -1px;
+    border-top: 1px solid #222;
+}
+.group:before{
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -28px;
+    height: 100%;
+    bottom: 1px;
+    z-index: -1;
+    width: 0;
+    border-left: 1px solid #222;
+}
+	
+</style>
+</head>
+<main>
+<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<ul class="parent-node">
+		<li class="node"th:each="dto1:${list}" th:if="${#strings.isEmpty(dto1.parentOrgUnitId)}" >
+			<a th:text="${dto1.orgUnitName}"></a>
+			<ol class="group">
+				<li class="tree-node node" th:each="dto2:${list}" th:if="${dto1.orgUnitId eq dto2.parentOrgUnitId}" >
+					<a th:text="${dto2.orgUnitName}" ></a>
+					<ul class="group">
+						<li class="tree-node node" th:each="dto3:${list}"  th:if="${dto2.orgUnitId eq dto3.parentOrgUnitId}">
+							<a th:text="${dto3.orgUnitName}"></a>
+						</li>
+					</ul>
+				</li>
+			</ol>
+		</li>
+	</ul>
+</main>
+</html>

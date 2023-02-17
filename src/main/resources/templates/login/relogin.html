@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet" href="/css/log/login.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+<script type="text/javascript">
+$(function(){ //230120 한아 작성
+	alert("퇴직한 사원입니다. 이용할 수 없습니다.");
+	location.href="/login";
+});
+</script>
+</head>
+<main>
+	<div class="login-1">
+		<div class="flex center login-log">
+			<img onclick="location.href='/'" src="/image/icon/logo2.png">
+		</div>
+		<div class="login-2">
+			<p>로그인 후 이용 가능합니다.</p>
+			<form action="/login" method="post">
+				<ul class="login-3">
+					<li>
+						<input type="email" name="email" placeholder="이메일을 입력하세요.">
+					</li>
+					<li>
+						<input type="password" name="password" placeholder="비밀번호를 입력하세요.">
+					</li>
+					<li>
+						<button class="login-button">로그인</button>
+					</li>
+				</ul>
+			</form>
+		</div>
+	</div>
+</main>
+</html>

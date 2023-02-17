@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<link rel="stylesheet" href="/css/board/board-list.css">
+<link rel="stylesheet" href="/css/commons/common.css" />
+<link rel="stylesheet" href="/css/commons/reset.css" />
+<th:block th:insert="~{/layout/sideMenu :: head}" />
+<style type="text/css">
+</style>
+</head>
+<main>
+	<th:block th:insert="~{/layout/sideMenu :: header}" />
+	<div class="wrap list-1">
+		<section>
+			<div class="flex center">
+				<p>공지사항</p>
+			</div>
+			<div class="flex right" style="display: block; height: 50px;" >
+				<a sec:authorize="hasAnyRole('ROLE_PERSONAL','ROLE_CEO')" class="flex right list-button" href="/Board/noticeWrite">[ 글쓰기 ]</a>
+			</div>
+			<div class="flex center back-list">
+				<table class="list-table">
+					<tr class="list-2">
+						<th width="100px">글번호</th>
+						<th width="250px">제목</th>
+						<th>작성자</th>
+						<th width="200px">작성일</th>
+					</tr>
+					<tr th:if="${noticeList.isEmpty()}">
+						<td colspan="5">해당 게시판에 등록된 글이 없습니다.</td>
+					</tr>
+					<tr th:if="${noticeList.isEmpty()}==false"
+						th:each="list : ${noticeList}">
+						<td th:text="${list.noticeNo}">번호</td>
+						<td><a th:href="@{/noticeDetail(noticeNo=${list.noticeNo})}">[[${list.title}]]</a></td>
+						<td th:text="${list.registNo.name}">관리자</td>
+						<td
+							th:text="${#temporals.format(list.createDate,'yyyy/MM/dd hh:mm')}"></td>
+					</tr>
+				</table>
+
+			</div>
+		</section>
+		<div class="search center">
+			<form action="" method="get" class="flex around">
+				<select class="searchType" name="searchType">
+					<option value="title">제목으로 검색</option>
+					<option value="content">내용으로 검색</option>
+					<option value="name">작성자로 검색</option>
+				</select> <input class="search-input" type="text" name="search"
+					placeholder="검색할 내용을 입력해 주세요" required="required">
+				<button class="list-button">[검색하기]</button>
+			</form>
+		</div>
+		<div class="pageBTN" th:if="${noticeList.getTotalPages}>0">
+			<a th:if="${noticeList.hasPrevious()}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()}&search=${search}&searchType=${searchType}|">[이전]</a>
+			<a th:if="${noticeList.getNumber()-1}>0"
+				th:text="${noticeList.getNumber()-1}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()-1}&search=${search}&searchType=${searchType}|">현재페이지-2</a>
+			<a th:if="${noticeList.getNumber()}>0"
+				th:text="${noticeList.getNumber()}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()}&search=${search}&searchType=${searchType}|">현재페이지-1</a>
+			<a id="currentPage" th:text="${noticeList.getNumber()+1}">현재페이지</a> <a
+				th:if="${noticeList.getNumber()+2<=noticeList.getTotalPages()}"
+				th:text="${noticeList.getNumber()+2}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()+2}&search=${search}&searchType=${searchType}|">현재페이지+1</a>
+			<a th:if="${noticeList.getNumber()+3<=noticeList.getTotalPages()}"
+				th:text="${noticeList.getNumber()+3}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()+3}&search=${search}&searchType=${searchType}|">현재페이지+2</a>
+			<a th:if="${noticeList.hasNext()}"
+				th:href="|/Board/noticeList?pageNum=${noticeList.getNumber()+2}&search=${search}&searchType=${searchType}|">[다음]</a>
+		</div>
+	</div>
+</main>
+</html>

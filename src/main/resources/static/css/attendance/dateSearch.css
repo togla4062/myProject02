@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.pageBTN {
+	text-align: center;
+}
+
+.pageBTN ul li a {
+	color: #4B99DA;
+}
+
+.top-menu:hover {
+	cursor: pointer;
+}
+
+.list-button{
+	display:inline-block;
+	padding:10px;
+	border-radius: 20px;
+	font-size: 16px;
+	font-weight: 600;
+	color: #4b99da;
+}
+
+.search {
+	margin: 5px auto;
+	padding: 0 10px;
+	width: 400px; 
+	border: 2px solid #4B99DA;
+	border-radius: 10px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
+
+.search-input {
+	border: none;
+	width: 150px;
+	color: #4B99DA;
+	font-weight: bold;
+	text-align: center;
+}
