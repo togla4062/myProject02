@@ -30,9 +30,6 @@
 <img src="https://img.shields.io/badge/Amazon Route53-4053d6?style=flat&logo=Amazon AWS&logoColor=white"/>
 </div>
 
-# 구현된 사이트
-http://www.yyysh.shop/
-
 <div align="center">
 :pushpin: 예시
 </div>
